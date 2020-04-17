@@ -1,0 +1,17 @@
+{
+    "name": "pjio/chessboard",
+    "description": "Library for chess rules",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^9.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carl-Philipp Jung",
+            "email": "mail+git@philipp-jung.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
