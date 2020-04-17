@@ -2,12 +2,12 @@
 namespace Test;
 
 use PHPUnit\Framework\TestCase;
-use Pjio\Chessboard\Square;
+use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\White;
 use Pjio\Chessboard\Pieces;
-use Pjio\Chessboard\Chessboard;
-use Pjio\Chessboard\ChessboardPrinter;
+use Pjio\Chessboard\Board\Chessboard;
+use Pjio\Chessboard\Board\ChessboardPrinter;
 
 class ChessboardPrinterTest extends TestCase
 {

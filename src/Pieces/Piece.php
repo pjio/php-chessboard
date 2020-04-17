@@ -1,7 +1,7 @@
 <?php
 namespace Pjio\Chessboard\Pieces;
 
-use Pjio\Chessboard\Square;
+use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Player;
 
 class Piece

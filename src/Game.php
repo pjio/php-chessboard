@@ -1,6 +1,8 @@
 <?php
 namespace Pjio\Chessboard;
 
+use Pjio\Chessboard\Board\Chessboard;
+
 class Game
 {
     private Chessboard $chessboard;

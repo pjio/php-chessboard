@@ -1,5 +1,5 @@
 <?php
-namespace Pjio\Chessboard;
+namespace Pjio\Chessboard\Board;
 
 use RuntimeException;
 

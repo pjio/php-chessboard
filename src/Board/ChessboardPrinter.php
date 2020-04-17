@@ -1,7 +1,11 @@
 <?php
-namespace Pjio\Chessboard;
+namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\Pieces;
+use Pjio\Chessboard\White;
+use Pjio\Chessboard\Black;
+use Pjio\Chessboard\Board\Square;
+use Pjio\Chessboard\Board\Chessboard;
 
 class ChessboardPrinter
 {

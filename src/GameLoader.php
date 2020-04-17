@@ -1,6 +1,8 @@
 <?php
 namespace Pjio\Chessboard;
 
+use Pjio\Chessboard\Board\ChessboardFactory;
+
 class GameLoader
 {
     private ChessboardFactory $chessboardFactory;

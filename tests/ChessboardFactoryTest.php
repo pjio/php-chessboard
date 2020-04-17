@@ -4,8 +4,8 @@ namespace Tests;
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\White;
-use Pjio\Chessboard\ChessboardPrinter;
-use Pjio\Chessboard\ChessboardFactory;
+use Pjio\Chessboard\Board\ChessboardPrinter;
+use Pjio\Chessboard\Board\ChessboardFactory;
 
 class ChessboardFactoryTest extends TestCase
 {
