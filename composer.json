@@ -5,6 +5,9 @@
     "require-dev": {
         "phpunit/phpunit": "^9.1"
     },
+    "require": {
+        "php": ">=7.4.0"
+    },
     "license": "MIT",
     "authors": [
         {
@@ -12,6 +15,10 @@
             "email": "mail+git@philipp-jung.net"
         }
     ],
-    "minimum-stability": "stable",
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Pjio\\Chessboard\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
 }
