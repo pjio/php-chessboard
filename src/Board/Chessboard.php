@@ -2,6 +2,7 @@
 namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\Board\Square;
+use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
 use Pjio\Chessboard\Pieces\Piece;
 
 /**
@@ -13,7 +14,14 @@ class Chessboard
 
     public function __construct(array $pieces)
     {
+        /** @var Piece $piece */
+        foreach ($pieces as $piece) {
+            $piece->setChessboard($this);
+        }
+
         $this->pieces = $pieces;
+
+        $this->ensureMaxOnePiecePerSquare();
     }
 
     public function getPiecesIterator(): iterable
@@ -31,5 +39,37 @@ class Chessboard
         }
 
         return null;
+    }
+
+    public function checkSquareIsFree(Square $square): bool
+    {
+        return 0 === count(array_filter(
+            $this->pieces,
+            function (Piece $piece) use ($square) {
+                return $piece->getSquare() == $square;
+            }
+        ));
+    }
+
+    private function ensureMaxOnePiecePerSquare(): void
+    {
+        $squareList = [];
+
+        /** @var Piece $piece */
+        foreach ($this->pieces as $piece) {
+            $square = $piece->getSquare();
+            if ($square === null) {
+                continue;
+            }
+            $key = $piece->getSquare()->__toString();
+
+            if (isset($squareList[$key])) {
+                throw new MultiplePiecesOnSquareException(
+                    sprintf('Square is occupied by more than one piece: %s', $key)
+                );
+            }
+
+            $squareList[$key] = true;
+        }
     }
 }
