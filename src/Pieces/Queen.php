@@ -1,6 +1,10 @@
 <?php
 namespace Pjio\Chessboard\Pieces;
 
-class Queen extends Piece
+class Queen extends AbstractPiece
 {
+    public function getName(): string
+    {
+        return 'Queen';
+    }
 }

@@ -1,11 +1,12 @@
 <?php
-namespace Pieces;
+namespace Tests;
+
+require_once __DIR__ . '/PieceImpl.php';
 
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Exception\SquareIsOccupiedException;
-use Pjio\Chessboard\Pieces\Piece;
 use Pjio\Chessboard\Black;
 
 class PieceTest extends TestCase
@@ -23,8 +24,8 @@ class PieceTest extends TestCase
 
     public function testMovePiece()
     {
-        $pieceA = new Piece(new Black(), $this->squareA);
-        $pieceB = new Piece(new Black(), $this->squareB);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
+        $pieceB = new PieceImpl(new Black(), $this->squareB);
 
         $chessboard = new Chessboard([$pieceA, $pieceB]);
 
@@ -37,8 +38,8 @@ class PieceTest extends TestCase
     {
         $this->expectException(SquareIsOccupiedException::class);
 
-        $pieceA = new Piece(new Black(), $this->squareA);
-        $pieceB = new Piece(new Black(), $this->squareB);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
+        $pieceB = new PieceImpl(new Black(), $this->squareB);
 
         $chessboard = new Chessboard([$pieceA, $pieceB]);
 
@@ -47,8 +48,8 @@ class PieceTest extends TestCase
 
     public function testRemoveFromBoard()
     {
-        $pieceA = new Piece(new Black(), $this->squareA);
-        $pieceB = new Piece(new Black(), $this->squareB);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
+        $pieceB = new PieceImpl(new Black(), $this->squareB);
 
         $chessboard = new Chessboard([$pieceA, $pieceB]);
 

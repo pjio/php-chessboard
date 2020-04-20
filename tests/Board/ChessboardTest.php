@@ -1,11 +1,12 @@
 <?php
 namespace Tests;
 
+require_once __DIR__ . '/../Pieces/PieceImpl.php';
+
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
 use Pjio\Chessboard\Board\Square;
-use Pjio\Chessboard\Pieces\Piece;
 use Pjio\Chessboard\Board\Chessboard;
 
 class ChessboardTest extends TestCase
@@ -26,10 +27,10 @@ class ChessboardTest extends TestCase
 
     public function testGetPieceBySquare()
     {
-        $pieceA = new Piece(new Black(), $this->squareA);
-        $pieceB = new Piece(new Black(), $this->squareB);
-        $pieceC = new Piece(new Black(), $this->squareC);
-        $pieceD = new Piece(new Black(), $this->squareD);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
+        $pieceB = new PieceImpl(new Black(), $this->squareB);
+        $pieceC = new PieceImpl(new Black(), $this->squareC);
+        $pieceD = new PieceImpl(new Black(), $this->squareD);
 
         $chessboard = new Chessboard([$pieceA, $pieceB, $pieceC, $pieceD]);
 
@@ -41,10 +42,10 @@ class ChessboardTest extends TestCase
 
     public function testGetPieceBySquareNotFound()
     {
-        $pieceA = new Piece(new Black(), $this->squareA);
-        $pieceB = new Piece(new Black(), $this->squareB);
-        $pieceC = new Piece(new Black(), $this->squareC);
-        $pieceD = new Piece(new Black(), $this->squareD);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
+        $pieceB = new PieceImpl(new Black(), $this->squareB);
+        $pieceC = new PieceImpl(new Black(), $this->squareC);
+        $pieceD = new PieceImpl(new Black(), $this->squareD);
 
         $chessboard = new Chessboard([$pieceA, $pieceB, $pieceC, $pieceD]);
 
@@ -56,8 +57,8 @@ class ChessboardTest extends TestCase
 
     public function testCheckSquareIsFreeReturnsTrue()
     {
-        $pieceA = new Piece(new Black(), $this->squareA);
-        $pieceB = new Piece(new Black(), $this->squareB);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
+        $pieceB = new PieceImpl(new Black(), $this->squareB);
 
         $chessboard = new Chessboard([$pieceA, $pieceB]);
 
@@ -66,7 +67,7 @@ class ChessboardTest extends TestCase
 
     public function testCheckSquareIsFreeReturnsFalse()
     {
-        $pieceA = new Piece(new Black(), $this->squareA);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
         $chessboard = new Chessboard([$pieceA]);
         $this->assertFalse($chessboard->checkSquareIsFree($this->squareA));
     }
@@ -75,8 +76,8 @@ class ChessboardTest extends TestCase
     {
         $this->expectException(MultiplePiecesOnSquareException::class);
 
-        $pieceA = new Piece(new Black(), $this->squareA);
-        $pieceB = new Piece(new Black(), $this->squareA);
+        $pieceA = new PieceImpl(new Black(), $this->squareA);
+        $pieceB = new PieceImpl(new Black(), $this->squareA);
 
         $chessboard = new Chessboard([$pieceA, $pieceB]);
     }

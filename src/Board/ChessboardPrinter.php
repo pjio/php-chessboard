@@ -33,7 +33,7 @@ class ChessboardPrinter
     {
         $flatBoard = array_fill(0, 64, null);
 
-        /** @var Pieces\Piece $piece */
+        /** @var Pieces\AbstractPiece $piece */
         foreach ($chessboard->getPiecesIterator() as $piece) {
             $square = $piece->getSquare();
             $index = $this->calcIndex($square->getFile(), $square->getRank());
@@ -53,7 +53,7 @@ class ChessboardPrinter
                 $index = $this->calcIndex($file, $rank);
                 $piece = $flatBoard[$index];
 
-                if ($piece instanceof Pieces\Piece) {
+                if ($piece instanceof Pieces\AbstractPiece) {
                     $str = sprintf(
                         '%s%s',
                         self::PLAYER_STR[get_class($piece->getPlayer())],

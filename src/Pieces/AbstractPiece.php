@@ -10,7 +10,7 @@ use RuntimeException;
 /**
  * Piece represents a black or white unit on the chessboard.
  */
-class Piece
+abstract class AbstractPiece
 {
     private AbstractPlayer $player;
     private ?Square $square = null;
@@ -21,6 +21,8 @@ class Piece
         $this->player = $player;
         $this->square = $square;
     }
+
+    abstract public function getName(): string;
 
     public function getPlayer(): AbstractPlayer
     {

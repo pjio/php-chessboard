@@ -3,7 +3,7 @@ namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
-use Pjio\Chessboard\Pieces\Piece;
+use Pjio\Chessboard\Pieces\AbstractPiece;
 
 /**
  * Chessboard is the model for the board and all the pieces
@@ -14,7 +14,7 @@ class Chessboard
 
     public function __construct(array $pieces)
     {
-        /** @var Piece $piece */
+        /** @var AbstractPiece $piece */
         foreach ($pieces as $piece) {
             $piece->setChessboard($this);
         }
@@ -29,9 +29,9 @@ class Chessboard
         return $this->pieces;
     }
 
-    public function getPieceBySquare(Square $square): ?Piece
+    public function getPieceBySquare(Square $square): ?AbstractPiece
     {
-        /** @var Piece $piece */
+        /** @var AbstractPiece $piece */
         foreach ($this->pieces as $piece) {
             if ($piece->getSquare() == $square) {
                 return $piece;
@@ -45,7 +45,7 @@ class Chessboard
     {
         return 0 === count(array_filter(
             $this->pieces,
-            function (Piece $piece) use ($square) {
+            function (AbstractPiece $piece) use ($square) {
                 return $piece->getSquare() == $square;
             }
         ));
@@ -55,7 +55,7 @@ class Chessboard
     {
         $squareList = [];
 
-        /** @var Piece $piece */
+        /** @var AbstractPiece $piece */
         foreach ($this->pieces as $piece) {
             $square = $piece->getSquare();
             if ($square === null) {
