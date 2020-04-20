@@ -4,7 +4,7 @@ namespace Tests;
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\White;
-use Pjio\Chessboard\Board\ChessboardPrinter;
+use Pjio\Chessboard\Board\ChessboardSerializer;
 use Pjio\Chessboard\Board\ChessboardFactory;
 
 class ChessboardFactoryTest extends TestCase
@@ -34,7 +34,7 @@ wp wp wp wp wp wp wp wp
 wr wk wb wQ wK wb wk wr
 EOF;
 
-        $actual = (new ChessboardPrinter())->print($chessboard);
+        $actual = (new ChessboardSerializer())->serialize($chessboard);
 
         $this->assertEquals($expected, $actual);
 

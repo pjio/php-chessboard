@@ -6,7 +6,7 @@ use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Exception\InvalidCoordinatesException;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\Board\ChessboardPrinter;
+use Pjio\Chessboard\Board\ChessboardSerializer;
 use Pjio\Chessboard\Game;
 
 /**
@@ -16,12 +16,12 @@ class Client
 {
     private Game $game;
     private GameLoader $gameLoader;
-    private ChessboardPrinter $chessboardPrinter;
+    private ChessboardSerializer $chessboardPrinter;
 
     public function __construct()
     {
         $this->gameLoader = new GameLoader();
-        $this->chessboardPrinter = new ChessboardPrinter();
+        $this->chessboardPrinter = new ChessboardSerializer();
     }
 
     public function run(): void
@@ -33,7 +33,7 @@ class Client
     private function gameLoop(): void
     {
         do {
-            echo $this->chessboardPrinter->print($this->game->getChessboard()) . PHP_EOL;
+            echo $this->chessboardPrinter->serialize($this->game->getChessboard()) . PHP_EOL;
             $this->handleTurn();
         } while (!$this->game->isFinished());
 
