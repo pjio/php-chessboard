@@ -2,6 +2,8 @@
 namespace Pjio\Chessboard;
 
 use Pjio\Chessboard\Board\Chessboard;
+use Pjio\Chessboard\Pieces\AbstractPiece;
+use Pjio\Chessboard\MoveValidator;
 use Pjio\Chessboard\AbstractPlayer;
 use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Move;
@@ -15,6 +17,7 @@ class Game
     private White $white;
     private Black $black;
     private AbstractPlayer $activePlayer;
+    private MoveValidator $moveValidator;
 
     public function __construct(Chessboard $chessboard, White $white, Black $black)
     {
@@ -22,6 +25,8 @@ class Game
         $this->white = $white;
         $this->black = $black;
         $this->activePlayer = $white;
+
+        $this->moveValidator = new MoveValidator();
     }
 
     public function getChessboard(): Chessboard
@@ -54,8 +59,24 @@ class Game
             );
         }
 
+        if (!$this->moveValidator->isValidMove($move, $this->chessboard)) {
+            throw new InvalidMoveException(
+                sprintf('Invalid move for %s', $piece)
+            );
+        }
 
-        throw new InvalidMoveException('not implemented yet');
+        /** @var AbstractPiece $removePiece */
+        $removePiece = $this->chessboard->getPieceBySquare($move->getTo());
+        if ($removePiece !== null) {
+            if ($removePiece->getPlayer() == $piece->getPlayer()) {
+                throw new RuntimeException('Can\'t remove piece of active player');
+            }
+
+            $removePiece->removeFromBoard();
+        }
+
+        $piece->setSquare($move->getTo());
+        $this->switchActivePlayer();
     }
 
     public function getActivePlayer(): AbstractPlayer
@@ -66,5 +87,14 @@ class Game
     public function isFinished(): bool
     {
         return false;
+    }
+
+    private function switchActivePlayer(): void
+    {
+        if ($this->activePlayer === $this->black) {
+            $this->activePlayer = $this->white;
+        } else {
+            $this->activePlayer = $this->black;
+        }
     }
 }

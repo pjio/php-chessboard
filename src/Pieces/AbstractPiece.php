@@ -62,4 +62,9 @@ abstract class AbstractPiece
     {
         $this->square = null;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
