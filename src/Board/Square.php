@@ -1,7 +1,7 @@
 <?php
 namespace Pjio\Chessboard\Board;
 
-use RuntimeException;
+use Pjio\Chessboard\Exception\InvalidCoordinatesException;
 
 /**
  *       8
@@ -36,13 +36,37 @@ class Square
     public const FILE_G = 6;
     public const FILE_H = 7;
 
+    private const READABLE_RANK = [
+        0 => '1',
+        1 => '2',
+        2 => '3',
+        3 => '4',
+        4 => '5',
+        5 => '6',
+        6 => '7',
+        7 => '8',
+    ];
+
+    private const READABLE_FILE = [
+        0 => 'A',
+        1 => 'B',
+        2 => 'C',
+        3 => 'D',
+        4 => 'E',
+        5 => 'F',
+        6 => 'G',
+        7 => 'H',
+    ];
+
     private int $file;
     private int $rank;
 
     public function __construct(int $file, int $rank)
     {
         if ($file < 0 || $file > 7 || $rank < 0 || $rank > 7) {
-            throw new RuntimeException(sprintf('Invalid Coordinates: %d, %d', $file, $rank));
+            throw new InvalidCoordinatesException(
+                sprintf('Invalid Coordinates: %d, %d', $file, $rank)
+            );
         }
 
         $this->file = $file;
@@ -57,5 +81,10 @@ class Square
     public function getRank(): int
     {
         return $this->rank;
+    }
+
+    public function __toString()
+    {
+        return sprintf('%s%s', self::READABLE_FILE[$this->file], self::READABLE_RANK[$this->rank]);
     }
 }

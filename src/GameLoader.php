@@ -3,13 +3,14 @@ namespace Pjio\Chessboard;
 
 use Pjio\Chessboard\Board\ChessboardFactory;
 
+/**
+ * GameLoader is a helper to create, load and persist games
+ */
 class GameLoader
 {
-    private ChessboardFactory $chessboardFactory;
-
-    public function __construct(ChessboardFactory $chessboardFactory)
+    public function __construct()
     {
-        $this->chessboardFactory = $chessboardFactory;
+        $this->chessboardFactory = new ChessboardFactory();
     }
 
     public function createNewGame(): Game

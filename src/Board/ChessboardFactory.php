@@ -2,7 +2,7 @@
 namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\Pieces\Bishop;
-use Pjio\Chessboard\Player;
+use Pjio\Chessboard\AbstractPlayer;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\White;
@@ -78,7 +78,7 @@ class ChessboardFactory
         return new Chessboard($pieces);
     }
 
-    private function generatePieces(string $fqcn, Player $player, int $rank, array $files): array
+    private function generatePieces(string $fqcn, AbstractPlayer $player, int $rank, array $files): array
     {
         $pieces = [];
 

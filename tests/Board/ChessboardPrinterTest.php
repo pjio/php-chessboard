@@ -1,5 +1,5 @@
 <?php
-namespace Test;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Board\Square;
