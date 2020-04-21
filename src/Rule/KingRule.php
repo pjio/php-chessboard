@@ -9,6 +9,6 @@ class KingRule implements MoveValidatorInterface
 {
     public function isValidMove(Move $move, Chessboard $chessboard): bool
     {
-        return true;
+        return false;
     }
 }

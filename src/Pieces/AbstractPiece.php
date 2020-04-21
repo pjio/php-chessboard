@@ -67,4 +67,9 @@ abstract class AbstractPiece
     {
         return $this->getName();
     }
+
+    public function isSame(AbstractPiece $piece): bool
+    {
+        return get_class($this) === get_class($piece) && get_class($this->player) === get_class($piece->getPlayer());
+    }
 }
