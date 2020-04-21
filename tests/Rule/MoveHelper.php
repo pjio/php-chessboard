@@ -29,10 +29,9 @@ class MoveHelper
      *
      * @return array
      */
-    public function getMoves(Square $squareFrom, string $fromBoard, string $toBoard): array
+    public function getMoves(string $testScenario, Square $squareFrom, string $fromBoard, string $toBoard): array
     {
-        $allowedMoves   = [];
-        $forbiddenMoves = [];
+        $moveList = [];
 
         /** @var Chessboard $chessboardFrom */
         $chessboardFrom = $this->chessboardSerializer->unserialize($fromBoard);
@@ -51,19 +50,28 @@ class MoveHelper
                 $toSquare = new Square($file, $rank);
                 $pieceAtTarget = $chessboardTo->getPieceBySquare($toSquare);
                 $move = new Move($pieceToMove->getPlayer(), $pieceToMove->getSquare(), $toSquare);
+                $name = sprintf('%s_%s_to_%s', $testScenario, $move->getFrom(), $move->getTo());
 
                 if ($pieceAtTarget !== null && $pieceToMove->isSame($pieceAtTarget)) {
-                    $allowedMoves[] = $move;
+                    $moveList[$name] = [
+                        'board'    => $fromBoard,
+                        'move'     => $move,
+                        'expected' => true,
+                    ];
                 } else {
-                    $forbiddenMoves[] = $move;
+                    $moveList[$name] = [
+                        'board'    => $fromBoard,
+                        'move'     => $move,
+                        'expected' => false,
+                    ];
                 }
             }
         }
 
-        if (count($allowedMoves) + count($forbiddenMoves) !== 64) {
+        if (count($moveList) !== 64) {
             throw new RuntimeException('MoveHelper: Unable to generate testdata from input!');
         }
 
-        return [$allowedMoves, $forbiddenMoves];
+        return $moveList;
     }
 }

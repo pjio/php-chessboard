@@ -9,6 +9,13 @@ class KingRule implements MoveValidatorInterface
 {
     public function isValidMove(Move $move, Chessboard $chessboard): bool
     {
-        return false;
+        $diffFile = abs($move->getFrom()->getFile() - $move->getTo()->getFile());
+        $diffRank = abs($move->getFrom()->getRank() - $move->getTo()->getRank());
+
+        if (($diffFile === 0 && $diffRank === 0) || $diffFile > 1 || $diffRank > 1) {
+            return false;
+        }
+
+        return true;
     }
 }

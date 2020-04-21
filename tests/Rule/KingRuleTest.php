@@ -24,23 +24,24 @@ class KingRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider provideScenario1
+     * @dataProvider provideMoves
      */
-    public function testScenario1(string $board, Move $move, bool $expected)
+    public function testIsValidMove(string $board, Move $move, bool $expected)
     {
         /** @var Chessboard $chessboard */
         $chessboard = $this->chessboardSerializer->unserialize($board);
 
         $actual = $this->kingRule->isValidMove($move, $chessboard);
 
-        $this->assertSame($expected, $actual, 'Move allowed');
+        $this->assertSame($expected, $actual);
     }
 
-    public function provideScenario1(): array
+    public function provideMoves(): array
     {
         $moveList = [];
+        $moveHelper = new MoveHelper();
 
-        $white = new White();
+        $testScenario = 'empty_board';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
         $fromBoard = <<< EOF
                        
@@ -62,33 +63,8 @@ EOF;
                        
                        
 EOF;
-        $moveHelper = new MoveHelper();
-        list($allowedMoves, $forbiddenMoves) = $moveHelper->getMoves($fromSquare, $fromBoard, $toBoard);
-
-        /** @var Move $move */
-        foreach ($allowedMoves as $move) {
-            $name = sprintf('move_allowed_%s_to_%s', $move->getFrom(), $move->getTo());
-            $moveList[$name] = [
-                'board'    => $fromBoard,
-                'move'     => $move,
-                'expected' => true,
-            ];
-        }
-
-        /** @var Move $move */
-        foreach ($forbiddenMoves as $move) {
-            $name = sprintf('move_forbidden_%s_to_%s', $move->getFrom(), $move->getTo());
-            $moveList[$name] = [
-                'board'    => $fromBoard,
-                'move'     => $move,
-                'expected' => false,
-            ];
-        }
+        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $fromBoard, $toBoard));
 
         return $moveList;
     }
-
-    /* public function testMovementIfCheckmateIsForbidden() */
-    /* { */
-    /* } */
 }
