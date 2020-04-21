@@ -53,7 +53,7 @@ class KingRuleTest extends TestCase
                        
                        
 EOF;
-        $validMovesBoard = <<< EOF
+        $validMoves = <<< EOF
                        
                        
       wK wK wK         
@@ -63,7 +63,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMovesBoard));
+        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'surrounded_same_color';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -77,7 +77,7 @@ EOF;
                        
                        
 EOF;
-        $validMovesBoard = <<< EOF
+        $validMoves = <<< EOF
                        
                        
                        
@@ -87,7 +87,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMovesBoard));
+        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'surrounded_diagonal';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -101,7 +101,7 @@ EOF;
                        
                        
 EOF;
-        $validMovesBoard = <<< EOF
+        $validMoves = <<< EOF
                        
                        
       wK    wK         
@@ -126,7 +126,7 @@ EOF;
                        
                        
 EOF;
-        $validMovesBoard = <<< EOF
+        $validMoves = <<< EOF
                        
                        
          wK            

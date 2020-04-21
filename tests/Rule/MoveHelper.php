@@ -23,21 +23,21 @@ class MoveHelper
     }
 
     /**
-     * @param  Square $squareFrom       Points to the piece on the $fromBoard which should be moved
-     * @param  string $board            The board on which the move should occur
-     * @param  string $validMovesBoard  All squares with the piece on this board indicate a valid move!
+     * @param  Square $squareFrom  Points to the piece on the $fromBoard which should be moved
+     * @param  string $board       The board on which the move should occur
+     * @param  string $validMoves  All squares with the piece on this board indicate a valid move!
      *
      * @return array
      */
-    public function getMoves(string $testScenario, Square $squareFrom, string $board, string $validMovesBoard): array
+    public function getMoves(string $testScenario, Square $squareFrom, string $board, string $validMoves): array
     {
         $moveList = [];
 
         /** @var Chessboard $chessboard */
         $chessboard = $this->chessboardSerializer->unserialize($board);
 
-        /** @var Chessboard $validMoves */
-        $validMoves = $this->chessboardSerializer->unserialize($validMovesBoard);
+        /** @var Chessboard $validMovesBoard */
+        $validMovesBoard = $this->chessboardSerializer->unserialize($validMoves);
 
         $pieceToMove = $chessboard->getPieceBySquare($squareFrom);
 
@@ -48,7 +48,7 @@ class MoveHelper
         for ($rank = Square::RANK_1; $rank <= Square::RANK_8; $rank++) {
             for ($file = Square::FILE_A; $file <= Square::FILE_H; $file++) {
                 $toSquare = new Square($file, $rank);
-                $pieceAtTarget = $validMoves->getPieceBySquare($toSquare);
+                $pieceAtTarget = $validMovesBoard->getPieceBySquare($toSquare);
                 $move = new Move($pieceToMove->getPlayer(), $pieceToMove->getSquare(), $toSquare);
                 $name = sprintf('%s_%s_to_%s', $testScenario, $move->getFrom(), $move->getTo());
 
