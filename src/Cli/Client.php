@@ -33,7 +33,7 @@ class Client
     private function gameLoop(): void
     {
         do {
-            echo $this->chessboardPrinter->serialize($this->game->getChessboard()) . PHP_EOL;
+            echo $this->chessboardPrinter->serialize($this->game->getChessboard(), true) . PHP_EOL;
             $this->handleTurn();
         } while (!$this->game->isFinished());
 

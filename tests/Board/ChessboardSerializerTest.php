@@ -30,14 +30,18 @@ class ChessboardSerializerTest extends TestCase
         $chessboard = new Chessboard($pieces);
 
         $expected = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $actual = $this->chessboardSerializer->serialize($chessboard);
@@ -56,14 +60,18 @@ EOF;
         $chessboard = new Chessboard($pieces);
 
         $expected = <<< EOF
-wp                   wr
-                       
-                       
-                       
-                       
-                       
-                       
-wb                   wk
+    A B C D E F G H
+   /----------------\
+ 8 |wp            wr| 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |wb            wk| 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $actual = $this->chessboardSerializer->serialize($chessboard);
@@ -113,14 +121,18 @@ EOF;
         $chessboard = new Chessboard($pieces);
 
         $expected = <<< EOF
-br bk bb bQ bK bb bk br
-bp bp bp bp bp bp bp bp
-                       
-                       
-                       
-                       
-wp wp wp wp wp wp wp wp
-wr wk wb wQ wK wb wk wr
+    A B C D E F G H
+   /----------------\
+ 8 |brbkbbbQbKbbbkbr| 8
+ 7 |bpbpbpbpbpbpbpbp| 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |wpwpwpwpwpwpwpwp| 2
+ 1 |wrwkwbwQwKwbwkwr| 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $actual = $this->chessboardSerializer->serialize($chessboard);
@@ -131,14 +143,18 @@ EOF;
     public function testUnserializeEmptyBoard()
     {
         $str = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         /** @var Chessboard $chessboard */
@@ -150,14 +166,18 @@ EOF;
     public function testUnserializeCorners()
     {
         $str = <<< EOF
-wr                   bK
-                       
-                       
-                       
-                       
-                       
-                       
-bb                   wp
+    A B C D E F G H
+   /----------------\
+ 8 |wr            bK| 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |bb            wp| 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         /** @var Chessboard $chessboard */
@@ -189,14 +209,18 @@ EOF;
     public function testUnSerializeFullBoard()
     {
         $str = <<< EOF
-br bk bb bQ bK bb bk br
-bp bp bp bp bp bp bp bp
-                       
-                       
-                       
-                       
-wp wp wp wp wp wp wp wp
-wr wk wb wQ wK wb wk wr
+    A B C D E F G H
+   /----------------\
+ 8 |brbkbbbQbKbbbkbr| 8
+ 7 |bpbpbpbpbpbpbpbp| 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |wpwpwpwpwpwpwpwp| 2
+ 1 |wrwkwbwQwKwbwkwr| 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         /** @var Chessboard $chessboard */
@@ -312,13 +336,17 @@ EOF;
         $this->expectException(UnserializeException::class);
 
         $str = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $this->chessboardSerializer->unserialize($str);
@@ -329,14 +357,18 @@ EOF;
         $this->expectException(UnserializeException::class);
 
         $str = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                      
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $this->chessboardSerializer->unserialize($str);
@@ -347,14 +379,18 @@ EOF;
         $this->expectException(UnserializeException::class);
 
         $str = <<< EOF
-Xr                     
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |Xr              | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $this->chessboardSerializer->unserialize($str);
@@ -365,14 +401,18 @@ EOF;
         $this->expectException(UnserializeException::class);
 
         $str = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                     bX
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |              bX| 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $this->chessboardSerializer->unserialize($str);

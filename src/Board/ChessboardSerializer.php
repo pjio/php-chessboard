@@ -11,6 +11,15 @@ use Pjio\Chessboard\Board\Chessboard;
 
 class ChessboardSerializer
 {
+    private const ANSI_BG_BLACK = "\033[48;5;242m";
+    private const ANSI_BG_WHITE = "\033[48;5;248m";
+    private const ANSI_RESET    = "\033[0m";
+
+    private const ANSI_FG = [
+        White::class => "\033[38;5;255m\033[1m",
+        Black::class => "\033[38;5;232m\033[1m",
+    ];
+
     private const PLAYER_STR = [
         White::class => 'w',
         Black::class => 'b',
@@ -25,22 +34,27 @@ class ChessboardSerializer
         Pieces\Rook::class   => 'r',
     ];
 
+    private const DESERIALIZE_OFFSET_TOP = 2;
+    private const DESERIALIZE_OFFSET_LEFT = 4;
+
     private array $players;
     private array $pieceFQCN;
 
-    public function serialize(Chessboard $chessboard): string
+    public function serialize(Chessboard $chessboard, bool $colors = false): string
     {
         $flatBoard = $this->flatten($chessboard);
-        return $this->stringify($flatBoard);
+        return $this->stringify($flatBoard, $colors);
     }
 
     public function unserialize(string $str): Chessboard
     {
         $rows = explode("\n", $str);
 
-        if (count($rows) !== 8) {
+        if (count($rows) !== 12) {
             throw new UnserializeException(sprintf('Invalid count of rows! (%d)', count($rows)));
         }
+
+        $rows = array_slice($rows, self::DESERIALIZE_OFFSET_TOP, 8);
 
         $this->pieceFQCN = array_flip(self::PIECE_STR);
         $this->players = [];
@@ -64,16 +78,27 @@ class ChessboardSerializer
         /** @var Pieces\AbstractPiece $piece */
         foreach ($chessboard->getPiecesIterator() as $piece) {
             $square = $piece->getSquare();
-            $index = $this->calcIndex($square->getFile(), $square->getRank());
-            $flatBoard[$index] = $piece;
+            if ($square !== null) {
+                $index = $this->calcIndex($square->getFile(), $square->getRank());
+                $flatBoard[$index] = $piece;
+            }
         }
 
         return $flatBoard;
     }
 
-    private function stringify(array $flatBoard): string
+    private function stringify(array $flatBoard, bool $colors): string
     {
-        $rows = [];
+        $header1 = '    A B C D E F G H';
+        $header2 = '   /----------------\\';
+        $footer1 = '   \----------------/';
+        $footer2 = '     A B C D E F G H';
+
+        $rows = [$header1, $header2];
+
+        $fgColor = '';
+        $bgColor = '';
+        $ansiReset = $colors ? self::ANSI_RESET : '';
 
         for ($rank = Square::RANK_8; $rank >= Square::RANK_1; $rank--) {
             $row = [];
@@ -81,21 +106,35 @@ class ChessboardSerializer
                 $index = $this->calcIndex($file, $rank);
                 $piece = $flatBoard[$index];
 
+                if ($colors) {
+                    $blackSquare = ($file + $rank) % 2 === 0;
+                    $bgColor = $blackSquare ? self::ANSI_BG_BLACK : self::ANSI_BG_WHITE;
+                }
+
                 if ($piece instanceof Pieces\AbstractPiece) {
+                    if ($colors) {
+                        $fgColor = self::ANSI_FG[get_class($piece->getPlayer())];
+                    }
+
                     $str = sprintf(
-                        '%s%s',
+                        '%s%s%s%s',
+                        $fgColor,
+                        $bgColor,
                         self::PLAYER_STR[get_class($piece->getPlayer())],
                         self::PIECE_STR[get_class($piece)]
                     );
                 } else {
-                    $str = '  ';
+                    $str = sprintf('%s  ', $bgColor);
                 }
 
                 $row[] = $str;
             }
 
-            $rows[] = implode(' ', $row);
+            $rows[] = sprintf(' %d |%s%s| %d', $rank + 1, implode('', $row), $ansiReset, $rank + 1);
         }
+
+        $rows[] = $footer1;
+        $rows[] = $footer2;
 
         return implode("\n", $rows);
     }
@@ -113,7 +152,7 @@ class ChessboardSerializer
 
         $pieces = [];
         for ($file = Square::FILE_A; $file <= Square::FILE_H; $file++) {
-            $pieceStr = substr($row, $file * 3, 2);
+            $pieceStr = substr($row, self::DESERIALIZE_OFFSET_LEFT + ($file * 2), 2);
             if (trim($pieceStr) !== '') {
                 $pieces[] = $this->parsePieceString($pieceStr, $file, $rank);
             }
