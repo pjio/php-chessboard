@@ -1,15 +1,13 @@
 <?php
 namespace Tests;
 
-require_once __DIR__ . '/MoveHelper.php';
-
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\ChessboardSerializer;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Rule\PawnRule;
-use Tests\MoveHelper;
+use Pjio\Chessboard\Helper\ValidMovesParser;
 
 class PawnRuleTest extends TestCase
 {
@@ -38,7 +36,7 @@ class PawnRuleTest extends TestCase
     public function provideMoves(): array
     {
         $moveList = [];
-        $moveHelper = new MoveHelper();
+        $validMovesParser = new ValidMovesParser();
 
         $testScenario = 'white_opening';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_2);
@@ -62,7 +60,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'white_blocked';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_2);
@@ -86,7 +84,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'white_capture';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_3);
@@ -110,7 +108,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'white_forward';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_3);
@@ -134,7 +132,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_opening';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_7);
@@ -158,7 +156,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_blocked';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_7);
@@ -182,7 +180,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_capture';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_6);
@@ -206,7 +204,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_forward';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_6);
@@ -230,7 +228,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         return $moveList;
     }

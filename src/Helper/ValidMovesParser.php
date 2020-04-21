@@ -1,5 +1,5 @@
 <?php
-namespace Tests;
+namespace Pjio\Chessboard\Helper;
 
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\Board\Chessboard;
@@ -9,7 +9,7 @@ use Pjio\Chessboard\Move;
 use Pjio\Chessboard\White;
 use RuntimeException;
 
-class MoveHelper
+class ValidMovesParser
 {
     private White $white;
     private Black $black;
@@ -29,7 +29,7 @@ class MoveHelper
      *
      * @return array
      */
-    public function getMoves(string $testScenario, Square $squareFrom, string $board, string $validMoves): array
+    public function parse(string $testScenario, Square $squareFrom, string $board, string $validMoves): array
     {
         $moveList = [];
 

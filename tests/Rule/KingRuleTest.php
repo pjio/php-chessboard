@@ -1,16 +1,14 @@
 <?php
 namespace Tests;
 
-require_once __DIR__ . '/MoveHelper.php';
-
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\ChessboardSerializer;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Rule\KingRule;
+use Pjio\Chessboard\Helper\ValidMovesParser;
 use Pjio\Chessboard\White;
-use Tests\MoveHelper;
 
 class KingRuleTest extends TestCase
 {
@@ -39,7 +37,7 @@ class KingRuleTest extends TestCase
     public function provideMoves(): array
     {
         $moveList = [];
-        $moveHelper = new MoveHelper();
+        $validMovesParser = new ValidMovesParser();
 
         $testScenario = 'empty_board';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -63,7 +61,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'surrounded_same_color';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -87,7 +85,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'surrounded_diagonal';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -112,7 +110,7 @@ EOF;
                        
 EOF;
         // This will require the other rules to ensure the king doesn't move into check
-        /* $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMovesBoard)); */
+        /* $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMovesBoard)); */
 
         $testScenario = 'surrounded_horizontal';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -137,7 +135,7 @@ EOF;
                        
 EOF;
         // This will require the other rules to ensure the king doesn't move into check
-        /* $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMovesBoard)); */
+        /* $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMovesBoard)); */
 
         return $moveList;
     }

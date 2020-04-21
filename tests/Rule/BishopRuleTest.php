@@ -1,15 +1,13 @@
 <?php
 namespace Tests;
 
-require_once __DIR__ . '/MoveHelper.php';
-
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\ChessboardSerializer;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Rule\BishopRule;
-use Tests\MoveHelper;
+use Pjio\Chessboard\Helper\ValidMovesParser;
 
 class BishopRuleTest extends TestCase
 {
@@ -38,7 +36,7 @@ class BishopRuleTest extends TestCase
     public function provideMoves(): array
     {
         $moveList = [];
-        $moveHelper = new MoveHelper();
+        $validMovesParser = new ValidMovesParser();
 
         $testScenario = 'empty_board';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -62,7 +60,7 @@ bb                bb
 bb                bb   
                      bb
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'blocked';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -86,7 +84,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'capture';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -110,7 +108,7 @@ EOF;
                        
                        
 EOF;
-        $moveList = array_merge($moveList, $moveHelper->getMoves($testScenario, $fromSquare, $board, $validMoves));
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         return $moveList;
     }
