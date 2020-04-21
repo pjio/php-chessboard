@@ -23,23 +23,23 @@ class MoveHelper
     }
 
     /**
-     * @param  Square $squareFrom  Points to the piece on the $fromBoard which should be moved
-     * @param  string $fromBoard   The board on which the move should occur
-     * @param  string $toBoard     All squares with the piece on this board indicate a valid move!
+     * @param  Square $squareFrom       Points to the piece on the $fromBoard which should be moved
+     * @param  string $board            The board on which the move should occur
+     * @param  string $validMovesBoard  All squares with the piece on this board indicate a valid move!
      *
      * @return array
      */
-    public function getMoves(string $testScenario, Square $squareFrom, string $fromBoard, string $toBoard): array
+    public function getMoves(string $testScenario, Square $squareFrom, string $board, string $validMovesBoard): array
     {
         $moveList = [];
 
-        /** @var Chessboard $chessboardFrom */
-        $chessboardFrom = $this->chessboardSerializer->unserialize($fromBoard);
+        /** @var Chessboard $chessboard */
+        $chessboard = $this->chessboardSerializer->unserialize($board);
 
-        /** @var Chessboard $chessboardTo */
-        $chessboardTo = $this->chessboardSerializer->unserialize($toBoard);
+        /** @var Chessboard $validMoves */
+        $validMoves = $this->chessboardSerializer->unserialize($validMovesBoard);
 
-        $pieceToMove = $chessboardFrom->getPieceBySquare($squareFrom);
+        $pieceToMove = $chessboard->getPieceBySquare($squareFrom);
 
         if ($pieceToMove === null) {
             throw new RuntimeException('No piece at $fromSquare found!');
@@ -48,19 +48,19 @@ class MoveHelper
         for ($rank = Square::RANK_1; $rank <= Square::RANK_8; $rank++) {
             for ($file = Square::FILE_A; $file <= Square::FILE_H; $file++) {
                 $toSquare = new Square($file, $rank);
-                $pieceAtTarget = $chessboardTo->getPieceBySquare($toSquare);
+                $pieceAtTarget = $validMoves->getPieceBySquare($toSquare);
                 $move = new Move($pieceToMove->getPlayer(), $pieceToMove->getSquare(), $toSquare);
                 $name = sprintf('%s_%s_to_%s', $testScenario, $move->getFrom(), $move->getTo());
 
                 if ($pieceAtTarget !== null && $pieceToMove->isSame($pieceAtTarget)) {
                     $moveList[$name] = [
-                        'board'    => $fromBoard,
+                        'board'    => $board,
                         'move'     => $move,
                         'expected' => true,
                     ];
                 } else {
                     $moveList[$name] = [
-                        'board'    => $fromBoard,
+                        'board'    => $board,
                         'move'     => $move,
                         'expected' => false,
                     ];

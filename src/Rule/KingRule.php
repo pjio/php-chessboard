@@ -16,6 +16,12 @@ class KingRule implements MoveValidatorInterface
             return false;
         }
 
+        $pieceAtTarget = $chessboard->getPieceBySquare($move->getTo());
+
+        if ($pieceAtTarget !== null && $pieceAtTarget->getPlayer() == $move->getPlayer()) {
+            return false;
+        }
+
         return true;
     }
 }
