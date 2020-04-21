@@ -110,6 +110,30 @@ EOF;
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
+        $testScenario = 'tunnel';
+        $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
+        $board = <<< EOF
+   wp wp wp wp wp    wp
+wp    wp wp wp    wp wp
+wp wp    wp    wp wp wp
+wp wp wp bb wp wp wp wp
+wp wp    wp    wp wp wp
+wp    wp wp wp    wp wp
+   wp wp wp wp wp    wp
+wp wp wp wp wp wp wp   
+EOF;
+        $validMoves = <<< EOF
+bb                bb   
+   bb          bb      
+      bb    bb         
+                       
+      bb    bb         
+   bb          bb      
+bb                bb   
+                     bb
+EOF;
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
+
         return $moveList;
     }
 }

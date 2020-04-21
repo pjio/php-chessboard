@@ -2,10 +2,18 @@
 namespace Pjio\Chessboard\Rule;
 
 use Pjio\Chessboard\Board\Chessboard;
+use Pjio\Chessboard\Helper\PathHelper;
 use Pjio\Chessboard\Move;
 
 class BaseRule
 {
+    protected PathHelper $pathHelper;
+
+    public function __construct()
+    {
+        $this->pathHelper = new PathHelper();
+    }
+
     protected function isDifferentPieceType(Move $move, Chessboard $chessboard): bool
     {
         $piece = $chessboard->getPieceBySquare($move->getFrom());
