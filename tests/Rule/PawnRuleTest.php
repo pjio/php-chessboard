@@ -41,192 +41,256 @@ class PawnRuleTest extends TestCase
         $testScenario = 'white_opening';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_2);
         $board = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-         wp            
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |      wp        | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-                       
-         wp            
-         wp            
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |      wp        | 4
+ 3 |      wp        | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'white_blocked';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_2);
         $board = <<< EOF
-                       
-                       
-                       
-                       
-                       
-         bp wb         
-         wp            
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |      bpwb      | 3
+ 2 |      wp        | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'white_capture';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_3);
         $board = <<< EOF
-                       
-                       
-                       
-                       
-      bQ wb bb         
-         wp            
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |    bQwbbb      | 4
+ 3 |      wp        | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-                       
-      wp    wp         
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |    wp  wp      | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'white_forward';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_3);
         $board = <<< EOF
-                       
-                       
-                       
-                       
-                       
-         wp            
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |      wp        | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-                       
-         wp            
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |      wp        | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_opening';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_7);
         $board = <<< EOF
-                       
-         bp            
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |      bp        | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-         bp            
-         bp            
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |      bp        | 6
+ 5 |      bp        | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_blocked';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_7);
         $board = <<< EOF
-                       
-         bp            
-         wp bb         
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |      bp        | 7
+ 6 |      wpbb      | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_capture';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_6);
         $board = <<< EOF
-                       
-                       
-         bp            
-      wQ bb wb         
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |      bp        | 6
+ 5 |    wQbbwb      | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-      bp    bp         
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |    bp  bp      | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'black_forward';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_6);
         $board = <<< EOF
-                       
-                       
-         bp            
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |      bp        | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-         bp            
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |      bp        | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 

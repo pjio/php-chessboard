@@ -24,19 +24,22 @@ class ChessboardFactoryTest extends TestCase
         );
 
         $expected = <<< EOF
-br bk bb bQ bK bb bk br
-bp bp bp bp bp bp bp bp
-                       
-                       
-                       
-                       
-wp wp wp wp wp wp wp wp
-wr wk wb wQ wK wb wk wr
+    A B C D E F G H
+   /----------------\
+ 8 |brbkbbbQbKbbbkbr| 8
+ 7 |bpbpbpbpbpbpbpbp| 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |wpwpwpwpwpwpwpwp| 2
+ 1 |wrwkwbwQwKwbwkwr| 1
+   \----------------/
+     A B C D E F G H
 EOF;
 
         $actual = (new ChessboardSerializer())->serialize($chessboard);
 
         $this->assertEquals($expected, $actual);
-
     }
 }

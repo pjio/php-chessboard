@@ -41,96 +41,128 @@ class KnightRuleTest extends TestCase
         $testScenario = 'empty_board';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_4);
         $board = <<< EOF
-                       
-                       
-                       
-                       
-         bk            
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |      bk        | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-      bk    bk         
-   bk          bk      
-                       
-   bk          bk      
-      bk    bk         
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    bk  bk      | 6
+ 5 |  bk      bk    | 5
+ 4 |                | 4
+ 3 |  bk      bk    | 3
+ 2 |    bk  bk      | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'jump_over';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_4);
         $board = <<< EOF
-                       
-                       
-                       
-      bp wp wp         
-      bp bk wp         
-      bp wp wp         
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |    bpwpwp      | 5
+ 4 |    bpbkwp      | 4
+ 3 |    bpwpwp      | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-      bk    bk         
-   bk          bk      
-                       
-   bk          bk      
-      bk    bk         
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    bk  bk      | 6
+ 5 |  bk      bk    | 5
+ 4 |                | 4
+ 3 |  bk      bk    | 3
+ 2 |    bk  bk      | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'capture';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_4);
         $board = <<< EOF
-                       
-                       
-      wQ    wQ         
-   wQ          wQ      
-         bk            
-   wQ          wQ      
-      wQ    wQ         
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    wQ  wQ      | 6
+ 5 |  wQ      wQ    | 5
+ 4 |      bk        | 4
+ 3 |  wQ      wQ    | 3
+ 2 |    wQ  wQ      | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-      bk    bk         
-   bk          bk      
-                       
-   bk          bk      
-      bk    bk         
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    bk  bk      | 6
+ 5 |  bk      bk    | 5
+ 4 |                | 4
+ 3 |  bk      bk    | 3
+ 2 |    bk  bk      | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'blocked';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_4);
         $board = <<< EOF
-                       
-                       
-      br    br         
-   br          br      
-         bk            
-   br          br      
-      br    br         
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    br  br      | 6
+ 5 |  br      br    | 5
+ 4 |      bk        | 4
+ 3 |  br      br    | 3
+ 2 |    br  br      | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 

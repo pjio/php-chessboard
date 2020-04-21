@@ -42,72 +42,96 @@ class KingRuleTest extends TestCase
         $testScenario = 'empty_board';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
         $board = <<< EOF
-                       
-                       
-                       
-         wK            
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |      wK        | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-      wK wK wK         
-      wK    wK         
-      wK wK wK         
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    wKwKwK      | 6
+ 5 |    wK  wK      | 5
+ 4 |    wKwKwK      | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'surrounded_same_color';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
         $board = <<< EOF
-                       
-                       
-      wp wp wp         
-      wp wK wp         
-      wp wp wp         
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    wpwpwp      | 6
+ 5 |    wpwKwp      | 5
+ 4 |    wpwpwp      | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'surrounded_diagonal';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
         $board = <<< EOF
-                       
-                       
-      bk    bk         
-         wK            
-      bk    bk         
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    bk  bk      | 6
+ 5 |      wK        | 5
+ 4 |    bk  bk      | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-      wK    wK         
-                       
-      wK    wK         
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |    wK  wK      | 6
+ 5 |                | 5
+ 4 |    wK  wK      | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         // This will require the other rules to ensure the king doesn't move into check
         /* $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMovesBoard)); */
@@ -115,24 +139,32 @@ EOF;
         $testScenario = 'surrounded_horizontal';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
         $board = <<< EOF
-                       
-                       
-         bk            
-      bk wK bk         
-         bk            
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |      bk        | 6
+ 5 |    bkwKbk      | 5
+ 4 |      bk        | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         $validMoves = <<< EOF
-                       
-                       
-         wK            
-      wK    wK         
-         wK            
-                       
-                       
-                       
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |      wK        | 6
+ 5 |    wK  wK      | 5
+ 4 |      wK        | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
 EOF;
         // This will require the other rules to ensure the king doesn't move into check
         /* $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMovesBoard)); */
