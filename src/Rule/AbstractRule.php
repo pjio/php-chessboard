@@ -4,14 +4,33 @@ namespace Pjio\Chessboard\Rule;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Helper\PathHelper;
 use Pjio\Chessboard\Move;
+use Pjio\Chessboard\MoveValidatorInterface;
 
-class BaseRule
+abstract class AbstractRule implements MoveValidatorInterface
 {
     protected PathHelper $pathHelper;
 
     public function __construct()
     {
         $this->pathHelper = new PathHelper();
+    }
+
+    abstract protected function pieceRule(Move $move, Chessboard $chessboard): bool;
+
+    public function isValidMove(Move $move, Chessboard $chessboard): bool
+    {
+        if ($this->isDifferentPieceType($move, $chessboard)
+            || $this->isDifferentPlayer($move, $chessboard)
+            || $this->isBlockedByOwnPiece($move, $chessboard)
+        ) {
+            return false;
+        }
+
+        if (!$this->pieceRule($move, $chessboard)) {
+            return false;
+        }
+
+        return !$this->isOwnKingCheckedAfterMove($move, $chessboard);
     }
 
     protected function isDifferentPieceType(Move $move, Chessboard $chessboard): bool
@@ -47,9 +66,6 @@ class BaseRule
         return false;
     }
 
-    /**
-     * This function is rather expensive. Therefore it should be checked last.
-     */
     protected function isOwnKingCheckedAfterMove(Move $move, Chessboard $chessboard): bool
     {
         // Todo: implement

@@ -5,23 +5,15 @@ use Pjio\Chessboard\Black;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\MoveValidatorInterface;
 use Pjio\Chessboard\Pieces\Pawn;
 use Pjio\Chessboard\White;
 
-class PawnRule extends BaseRule implements MoveValidatorInterface
+class PawnRule extends AbstractRule
 {
     protected const PIECE_TYPE = Pawn::class;
 
-    public function isValidMove(Move $move, Chessboard $chessboard): bool
+    protected function pieceRule(Move $move, Chessboard $chessboard): bool
     {
-        if ($this->isDifferentPieceType($move, $chessboard)
-            || $this->isDifferentPlayer($move, $chessboard)
-            || $this->isBlockedByOwnPiece($move, $chessboard)
-        ) {
-            return false;
-        }
-
         $direction = get_class($move->getPlayer()) == White::class ? 1 : -1;
         $startRank = get_class($move->getPlayer()) == Black::class ? Square::RANK_7 : Square::RANK_2;
 
@@ -66,6 +58,6 @@ class PawnRule extends BaseRule implements MoveValidatorInterface
             }
         }
 
-        return !$this->isOwnKingCheckedAfterMove($move, $chessboard);
+        return true;
     }
 }

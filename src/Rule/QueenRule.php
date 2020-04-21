@@ -3,22 +3,14 @@ namespace Pjio\Chessboard\Rule;
 
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\MoveValidatorInterface;
 use Pjio\Chessboard\Pieces\Queen;
 
-class QueenRule extends BaseRule implements MoveValidatorInterface
+class QueenRule extends AbstractRule
 {
     protected const PIECE_TYPE = Queen::class;
 
-    public function isValidMove(Move $move, Chessboard $chessboard): bool
+    protected function pieceRule(Move $move, Chessboard $chessboard): bool
     {
-        if ($this->isDifferentPieceType($move, $chessboard)
-            || $this->isDifferentPlayer($move, $chessboard)
-            || $this->isBlockedByOwnPiece($move, $chessboard)
-        ) {
-            return false;
-        }
-
         $from = $move->getFrom();
         $to   = $move->getTo();
 
@@ -40,6 +32,6 @@ class QueenRule extends BaseRule implements MoveValidatorInterface
             return false;
         }
 
-        return !$this->isOwnKingCheckedAfterMove($move, $chessboard);
+        return true;
     }
 }
