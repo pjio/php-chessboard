@@ -13,4 +13,9 @@ abstract class AbstractPlayer
     {
         return $this->getName();
     }
+
+    public function isPlayer(AbstractPlayer $player): bool
+    {
+        return get_class($this) === get_class($player);
+    }
 }

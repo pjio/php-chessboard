@@ -12,6 +12,7 @@ class Move
     private AbstractPlayer $player;
     private Square $from;
     private Square $to;
+    private bool $castling = false;
 
     public function __construct(AbstractPlayer $player, Square $from, Square $to)
     {
@@ -33,5 +34,15 @@ class Move
     public function getTo(): Square
     {
         return $this->to;
+    }
+
+    public function isCastling(): bool
+    {
+        return $this->castling;
+    }
+
+    public function setCastling(bool $castling)
+    {
+        $this->castling = $castling;
     }
 }

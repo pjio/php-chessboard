@@ -10,7 +10,7 @@ use Pjio\Chessboard\Piece\King;
 abstract class AbstractRule
 {
     protected RuleHelper $ruleHelper;
-    private CheckedHelper $checkedHelper;
+    protected CheckedHelper $checkedHelper;
 
     public function __construct()
     {

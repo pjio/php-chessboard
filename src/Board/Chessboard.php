@@ -2,11 +2,12 @@
 namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\AbstractPlayer;
-use Pjio\Chessboard\Piece\King;
 use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Piece\AbstractPiece;
+use Pjio\Chessboard\Piece\King;
+use Pjio\Chessboard\Rule\KingRule;
 
 /**
  * Chessboard is the model for the board and all the pieces
@@ -82,6 +83,10 @@ class Chessboard
         }
 
         $piece->setSquare($move->getTo());
+
+        if ($move->isCastling()) {
+            $this->handleCastling($move);
+        }
     }
 
     public function getKing(AbstractPlayer $player): ?King
@@ -121,5 +126,22 @@ class Chessboard
 
             $squareList[$key] = true;
         }
+    }
+
+    /**
+     * handleCastling should be calling when the isCastling flag is set to move the rook additionally.
+     */
+    private function handleCastling(Move $move): void
+    {
+        $to         = $move->getTo();
+        $isKingside = $to->getFile() === KingRule::CASTLING_KINGSIDE_KING;
+
+        $fileFrom = $isKingside ? Square::FILE_H : Square::FILE_A;
+        $fileTo   = $isKingside ? KingRule::CASTLING_KINGSIDE_ROOK : KingRule::CASTLING_QUEENSIDE_ROOK;
+        $rookFrom = new Square($fileFrom, $to->getRank());
+        $rookTo   = new Square($fileTo, $to->getRank());
+
+        $rook = $this->getPieceBySquare($rookFrom);
+        $rook->setSquare($rookTo);
     }
 }
