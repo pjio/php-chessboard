@@ -1,7 +1,6 @@
 <?php
 namespace Pjio\Chessboard;
 
-use Pjio\Chessboard\AbstractPlayer;
 use Pjio\Chessboard\Board\Square;
 
 /**

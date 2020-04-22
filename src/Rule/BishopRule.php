@@ -22,7 +22,7 @@ class BishopRule extends AbstractRule
             return false;
         }
 
-        if (!$this->pathHelper->isFreePathDiagonal($move->getFrom(), $move->getTo(), $chessboard)) {
+        if (!$this->ruleHelper->isFreePathDiagonal($move->getFrom(), $move->getTo(), $chessboard)) {
             return false;
         }
 

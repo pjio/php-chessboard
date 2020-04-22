@@ -1,7 +1,6 @@
 <?php
 namespace Pjio\Chessboard;
 
-use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Board\Chessboard;
 
 interface MoveValidatorInterface

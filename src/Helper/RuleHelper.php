@@ -4,7 +4,7 @@ namespace Pjio\Chessboard\Helper;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\Square;
 
-class PathHelper
+class RuleHelper
 {
     /**
      * Relies on being called with a diagonal path

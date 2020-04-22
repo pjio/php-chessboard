@@ -2,11 +2,9 @@
 namespace Pjio\Chessboard;
 
 use Pjio\Chessboard\Board\Chessboard;
-use Pjio\Chessboard\Pieces\AbstractPiece;
-use Pjio\Chessboard\MoveValidator;
-use Pjio\Chessboard\AbstractPlayer;
 use Pjio\Chessboard\Exception\InvalidMoveException;
-use Pjio\Chessboard\Move;
+use Pjio\Chessboard\Exception\MoveAfterGameFinishedException;
+use Pjio\Chessboard\Pieces\AbstractPiece;
 
 /**
  * Game is the model for a single game between two players
@@ -39,6 +37,10 @@ class Game
      */
     public function move(Move $move): void
     {
+        if ($this->isFinished()) {
+            throw new MoveAfterGameFinishedException('Move not allowed after game is finished!');
+        }
+
         if ($move->getPlayer() !== $this->activePlayer) {
             throw new InvalidMoveException(
                 sprintf('%s has to be the active player to make a move!', $move->getPlayer()->getName())

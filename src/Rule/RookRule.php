@@ -22,7 +22,7 @@ class RookRule extends AbstractRule
             return false;
         }
 
-        if (!$this->pathHelper->isFreePathLinear($move->getFrom(), $move->getTo(), $chessboard)) {
+        if (!$this->ruleHelper->isFreePathLinear($move->getFrom(), $move->getTo(), $chessboard)) {
             return false;
         }
 

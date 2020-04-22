@@ -1,7 +1,6 @@
 <?php
 namespace Pjio\Chessboard\Board;
 
-use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
 use Pjio\Chessboard\Pieces\AbstractPiece;
 

@@ -24,11 +24,11 @@ class QueenRule extends AbstractRule
             return false;
         }
 
-        if ($isLinear && !$this->pathHelper->isFreePathLinear($move->getFrom(), $move->getTo(), $chessboard)) {
+        if ($isLinear && !$this->ruleHelper->isFreePathLinear($move->getFrom(), $move->getTo(), $chessboard)) {
             return false;
         }
 
-        if ($isDiagonal && !$this->pathHelper->isFreePathDiagonal($move->getFrom(), $move->getTo(), $chessboard)) {
+        if ($isDiagonal && !$this->ruleHelper->isFreePathDiagonal($move->getFrom(), $move->getTo(), $chessboard)) {
             return false;
         }
 

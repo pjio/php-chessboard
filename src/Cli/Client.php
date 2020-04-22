@@ -44,7 +44,7 @@ class Client
     {
         echo sprintf('Players turn: %s%s', $this->game->getActivePlayer()->getName(), PHP_EOL);
 
-        $finished = false;
+        $moved = false;
         do {
             do {
                 $fromStr    = readline('Move from: ');
@@ -59,11 +59,11 @@ class Client
             $move = new Move($this->game->getActivePlayer(), $fromSquare, $toSquare);
             try {
                 $this->game->move($move);
-                $finished = true;
+                $moved = true;
             } catch (InvalidMoveException $e) {
                 echo 'ERROR: ' . $e->getMessage() . PHP_EOL;
             }
-        } while (!$finished);
+        } while (!$moved);
     }
 
     private function parseSquare(string $squareStr): ?Square

@@ -8,7 +8,7 @@ use Pjio\Chessboard\AbstractPlayer;
 use RuntimeException;
 
 /**
- * Piece represents a black or white unit on the chessboard.
+ * AbstractPiece represents a unit on the chessboard.
  */
 abstract class AbstractPiece
 {

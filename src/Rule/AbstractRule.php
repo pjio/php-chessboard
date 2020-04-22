@@ -2,17 +2,17 @@
 namespace Pjio\Chessboard\Rule;
 
 use Pjio\Chessboard\Board\Chessboard;
-use Pjio\Chessboard\Helper\PathHelper;
+use Pjio\Chessboard\Helper\RuleHelper;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\MoveValidatorInterface;
 
 abstract class AbstractRule implements MoveValidatorInterface
 {
-    protected PathHelper $pathHelper;
+    protected RuleHelper $ruleHelper;
 
     public function __construct()
     {
-        $this->pathHelper = new PathHelper();
+        $this->ruleHelper = new RuleHelper();
     }
 
     abstract protected function pieceRule(Move $move, Chessboard $chessboard): bool;

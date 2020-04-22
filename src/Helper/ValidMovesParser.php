@@ -52,19 +52,11 @@ class ValidMovesParser
                 $move = new Move($pieceToMove->getPlayer(), $pieceToMove->getSquare(), $toSquare);
                 $name = sprintf('%s_%s_to_%s', $testScenario, $move->getFrom(), $move->getTo());
 
-                if ($pieceAtTarget !== null && $pieceToMove->isSame($pieceAtTarget)) {
-                    $moveList[$name] = [
-                        'board'    => $board,
-                        'move'     => $move,
-                        'expected' => true,
-                    ];
-                } else {
-                    $moveList[$name] = [
-                        'board'    => $board,
-                        'move'     => $move,
-                        'expected' => false,
-                    ];
-                }
+                $moveList[$name] = [
+                    'board'    => $board,
+                    'move'     => $move,
+                    'expected' => ($pieceAtTarget !== null && $pieceToMove->isSame($pieceAtTarget)),
+                ];
             }
         }
 

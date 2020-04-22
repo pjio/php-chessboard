@@ -8,7 +8,6 @@ use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Rule\KingRule;
 use Pjio\Chessboard\Helper\ValidMovesParser;
-use Pjio\Chessboard\White;
 
 class KingRuleTest extends TestCase
 {

@@ -1,11 +1,7 @@
 <?php
 namespace Pjio\Chessboard;
 
-use Pjio\Chessboard\MoveValidatorInterface;
 use Pjio\Chessboard\Board\Chessboard;
-use Pjio\Chessboard\Move;
-use Pjio\Chessboard\Pieces;
-use Pjio\Chessboard\Rule;
 use RuntimeException;
 
 class MoveValidator implements MoveValidatorInterface

@@ -6,8 +6,6 @@ use Pjio\Chessboard\Pieces\AbstractPiece;
 use Pjio\Chessboard\Exception\UnserializeException;
 use Pjio\Chessboard\White;
 use Pjio\Chessboard\Black;
-use Pjio\Chessboard\Board\Square;
-use Pjio\Chessboard\Board\Chessboard;
 
 class ChessboardSerializer
 {
