@@ -75,6 +75,10 @@ abstract class AbstractRule
         $copy->move($move);
         $king = $copy->getKing($move->getPlayer());
 
+        if ($king === null) {
+            return false;
+        }
+
         return $this->checkedHelper->isKingChecked($king, $copy);
     }
 }

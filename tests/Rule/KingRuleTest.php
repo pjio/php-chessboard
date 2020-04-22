@@ -132,8 +132,7 @@ EOF;
    \----------------/
      A B C D E F G H
 EOF;
-        // This will require the other rules to ensure the king doesn't move into check
-        /* $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMovesBoard)); */
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         $testScenario = 'surrounded_horizontal';
         $fromSquare = new Square(Square::FILE_D, Square::RANK_5);
@@ -165,8 +164,39 @@ EOF;
    \----------------/
      A B C D E F G H
 EOF;
-        // This will require the other rules to ensure the king doesn't move into check
-        /* $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMovesBoard)); */
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
+
+        $testScenario = 'protect_king';
+        $fromSquare = new Square(Square::FILE_D, Square::RANK_6);
+        $board = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |      bK        | 6
+ 5 |                | 5
+ 4 |      wr        | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        $validMoves = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |    bK  bK      | 7
+ 6 |    bK  bK      | 6
+ 5 |    bK  bK      | 5
+ 4 |      wr        | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
         return $moveList;
     }

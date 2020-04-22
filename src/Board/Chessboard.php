@@ -59,7 +59,7 @@ class Chessboard
         $clonedPieces = [];
 
         /** @var AbstractPiece $piece */
-        foreach ($this->pieces as $piece) {
+        foreach ($this->getPiecesOnBoard() as $piece) {
             $clonedPieces[] = $piece->getClone($this);
         }
 
@@ -94,6 +94,11 @@ class Chessboard
         }
 
         return null;
+    }
+
+    public function getPiecesOnBoard(): array
+    {
+        return array_filter($this->pieces, fn($piece) => !$piece->isRemoved());
     }
 
     private function ensureMaxOnePiecePerSquare(): void
