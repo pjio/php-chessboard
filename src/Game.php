@@ -67,17 +67,7 @@ class Game
             );
         }
 
-        /** @var AbstractPiece $removePiece */
-        $removePiece = $this->chessboard->getPieceBySquare($move->getTo());
-        if ($removePiece !== null) {
-            if ($removePiece->getPlayer() == $piece->getPlayer()) {
-                throw new RuntimeException('Can\'t remove piece of active player');
-            }
-
-            $removePiece->removeFromBoard();
-        }
-
-        $piece->setSquare($move->getTo());
+        $this->chessboard->move($move);
         $this->switchActivePlayer();
     }
 
@@ -88,7 +78,11 @@ class Game
 
     public function isFinished(): bool
     {
-        return false;
+        $whiteKing = $this->chessboard->getKing($this->white);
+        $blackKing = $this->chessboard->getKing($this->black);
+
+        return $whiteKing === null || $whiteKing->isRemoved()
+            || $blackKing === null || $blackKing->isRemoved();
     }
 
     private function switchActivePlayer(): void

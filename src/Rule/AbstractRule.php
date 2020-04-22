@@ -2,16 +2,20 @@
 namespace Pjio\Chessboard\Rule;
 
 use Pjio\Chessboard\Board\Chessboard;
+use Pjio\Chessboard\Helper\CheckedHelper;
 use Pjio\Chessboard\Helper\RuleHelper;
 use Pjio\Chessboard\Move;
+use Pjio\Chessboard\Piece\King;
 
 abstract class AbstractRule
 {
     protected RuleHelper $ruleHelper;
+    private CheckedHelper $checkedHelper;
 
     public function __construct()
     {
         $this->ruleHelper = new RuleHelper();
+        $this->checkedHelper = new CheckedHelper();
     }
 
     abstract protected function pieceRule(Move $move, Chessboard $chessboard): bool;
@@ -67,7 +71,10 @@ abstract class AbstractRule
 
     protected function isOwnKingCheckedAfterMove(Move $move, Chessboard $chessboard): bool
     {
-        // Todo: implement
-        return false;
+        $copy = clone $chessboard;
+        $copy->move($move);
+        $king = $copy->getKing($move->getPlayer());
+
+        return $this->checkedHelper->isKingChecked($king, $copy);
     }
 }

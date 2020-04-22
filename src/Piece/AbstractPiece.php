@@ -63,6 +63,11 @@ abstract class AbstractPiece
         $this->square = null;
     }
 
+    public function isRemoved(): bool
+    {
+        return $this->square === null;
+    }
+
     public function __toString()
     {
         return $this->getName();
@@ -71,5 +76,15 @@ abstract class AbstractPiece
     public function isSame(AbstractPiece $piece): bool
     {
         return get_class($this) === get_class($piece) && get_class($this->player) === get_class($piece->getPlayer());
+    }
+
+    public function getClone(Chessboard $chessboard): AbstractPiece
+    {
+        $fqcn = get_class($this);
+        /** @var AbstractPiece $clone */
+        $clone = new $fqcn($this->player, clone $this->square);
+        $clone->setChessboard($chessboard);
+
+        return $clone;
     }
 }
