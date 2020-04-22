@@ -4,7 +4,7 @@ namespace Pjio\Chessboard;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Exception\MoveAfterGameFinishedException;
-use Pjio\Chessboard\Pieces\AbstractPiece;
+use Pjio\Chessboard\Piece\AbstractPiece;
 
 /**
  * Game is the model for a single game between two players

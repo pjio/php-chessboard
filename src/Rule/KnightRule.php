@@ -3,7 +3,7 @@ namespace Pjio\Chessboard\Rule;
 
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\Pieces\Knight;
+use Pjio\Chessboard\Piece\Knight;
 
 class KnightRule extends AbstractRule
 {

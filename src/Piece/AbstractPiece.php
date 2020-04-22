@@ -1,5 +1,5 @@
 <?php
-namespace Pjio\Chessboard\Pieces;
+namespace Pjio\Chessboard\Piece;
 
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Exception\SquareIsOccupiedException;

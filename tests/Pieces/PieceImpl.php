@@ -1,7 +1,7 @@
 <?php
 namespace Tests;
 
-use Pjio\Chessboard\Pieces\AbstractPiece;
+use Pjio\Chessboard\Piece\AbstractPiece;
 
 class PieceImpl extends AbstractPiece
 {

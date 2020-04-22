@@ -1,8 +1,8 @@
 <?php
 namespace Pjio\Chessboard\Board;
 
-use Pjio\Chessboard\Pieces;
-use Pjio\Chessboard\Pieces\AbstractPiece;
+use Pjio\Chessboard\Piece;
+use Pjio\Chessboard\Piece\AbstractPiece;
 use Pjio\Chessboard\Exception\UnserializeException;
 use Pjio\Chessboard\White;
 use Pjio\Chessboard\Black;
@@ -24,12 +24,12 @@ class ChessboardSerializer
     ];
 
     private const PIECE_STR = [
-        Pieces\Bishop::class => 'b',
-        Pieces\King::class   => 'K',
-        Pieces\Knight::class => 'k',
-        Pieces\Pawn::class   => 'p',
-        Pieces\Queen::class  => 'Q',
-        Pieces\Rook::class   => 'r',
+        Piece\Bishop::class => 'b',
+        Piece\King::class   => 'K',
+        Piece\Knight::class => 'k',
+        Piece\Pawn::class   => 'p',
+        Piece\Queen::class  => 'Q',
+        Piece\Rook::class   => 'r',
     ];
 
     private const DESERIALIZE_OFFSET_TOP = 2;
@@ -109,7 +109,7 @@ class ChessboardSerializer
                     $bgColor = $blackSquare ? self::ANSI_BG_BLACK : self::ANSI_BG_WHITE;
                 }
 
-                if ($piece instanceof Pieces\AbstractPiece) {
+                if ($piece instanceof Piece\AbstractPiece) {
                     if ($colors) {
                         $fgColor = self::ANSI_FG[get_class($piece->getPlayer())];
                     }

@@ -2,7 +2,7 @@
 namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
-use Pjio\Chessboard\Pieces\AbstractPiece;
+use Pjio\Chessboard\Piece\AbstractPiece;
 
 /**
  * Chessboard is the model for the board and all the pieces

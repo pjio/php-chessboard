@@ -1,5 +1,7 @@
 <?php
-namespace Pjio\Chessboard\Pieces;
+namespace Pjio\Chessboard\Piece;
+
+use Pjio\Chessboard\Piece\AbstractPiece;
 
 class Pawn extends AbstractPiece
 {

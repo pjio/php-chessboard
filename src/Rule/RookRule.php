@@ -3,7 +3,7 @@ namespace Pjio\Chessboard\Rule;
 
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\Pieces\Rook;
+use Pjio\Chessboard\Piece\Rook;
 
 class RookRule extends AbstractRule
 {

@@ -5,7 +5,7 @@ use Pjio\Chessboard\Black;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\Pieces\Pawn;
+use Pjio\Chessboard\Piece\Pawn;
 use Pjio\Chessboard\White;
 
 class PawnRule extends AbstractRule

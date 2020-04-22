@@ -1,15 +1,15 @@
 <?php
 namespace Pjio\Chessboard\Board;
 
-use Pjio\Chessboard\Pieces\Bishop;
+use Pjio\Chessboard\Piece\Bishop;
 use Pjio\Chessboard\AbstractPlayer;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\White;
-use Pjio\Chessboard\Pieces\King;
-use Pjio\Chessboard\Pieces\Knight;
-use Pjio\Chessboard\Pieces\Pawn;
-use Pjio\Chessboard\Pieces\Queen;
-use Pjio\Chessboard\Pieces\Rook;
+use Pjio\Chessboard\Piece\King;
+use Pjio\Chessboard\Piece\Knight;
+use Pjio\Chessboard\Piece\Pawn;
+use Pjio\Chessboard\Piece\Queen;
+use Pjio\Chessboard\Piece\Rook;
 
 class ChessboardFactory
 {

@@ -3,11 +3,11 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use Pjio\Chessboard\Exception\UnserializeException;
-use Pjio\Chessboard\Pieces\AbstractPiece;
+use Pjio\Chessboard\Piece\AbstractPiece;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\White;
-use Pjio\Chessboard\Pieces;
+use Pjio\Chessboard\Piece;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\ChessboardSerializer;
 
@@ -52,10 +52,10 @@ EOF;
     public function testSerializeCorners()
     {
         $pieces = [
-            new Pieces\Pawn($this->white, new Square(Square::FILE_A, Square::RANK_8)),
-            new Pieces\Rook($this->white, new Square(Square::FILE_H, Square::RANK_8)),
-            new Pieces\Bishop($this->white, new Square(Square::FILE_A, Square::RANK_1)),
-            new Pieces\Knight($this->white, new Square(Square::FILE_H, Square::RANK_1)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_A, Square::RANK_8)),
+            new Piece\Rook($this->white, new Square(Square::FILE_H, Square::RANK_8)),
+            new Piece\Bishop($this->white, new Square(Square::FILE_A, Square::RANK_1)),
+            new Piece\Knight($this->white, new Square(Square::FILE_H, Square::RANK_1)),
         ];
         $chessboard = new Chessboard($pieces);
 
@@ -82,41 +82,41 @@ EOF;
     public function testSerializeFullBoard()
     {
         $pieces = [
-            new Pieces\Pawn($this->black, new Square(Square::FILE_A, Square::RANK_7)),
-            new Pieces\Pawn($this->black, new Square(Square::FILE_B, Square::RANK_7)),
-            new Pieces\Pawn($this->black, new Square(Square::FILE_C, Square::RANK_7)),
-            new Pieces\Pawn($this->black, new Square(Square::FILE_D, Square::RANK_7)),
-            new Pieces\Pawn($this->black, new Square(Square::FILE_E, Square::RANK_7)),
-            new Pieces\Pawn($this->black, new Square(Square::FILE_F, Square::RANK_7)),
-            new Pieces\Pawn($this->black, new Square(Square::FILE_G, Square::RANK_7)),
-            new Pieces\Pawn($this->black, new Square(Square::FILE_H, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_A, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_B, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_C, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_D, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_E, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_F, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_G, Square::RANK_7)),
+            new Piece\Pawn($this->black, new Square(Square::FILE_H, Square::RANK_7)),
 
-            new Pieces\Rook($this->black, new Square(Square::FILE_A, Square::RANK_8)),
-            new Pieces\Knight($this->black, new Square(Square::FILE_B, Square::RANK_8)),
-            new Pieces\Bishop($this->black, new Square(Square::FILE_C, Square::RANK_8)),
-            new Pieces\Queen($this->black, new Square(Square::FILE_D, Square::RANK_8)),
-            new Pieces\King($this->black, new Square(Square::FILE_E, Square::RANK_8)),
-            new Pieces\Bishop($this->black, new Square(Square::FILE_F, Square::RANK_8)),
-            new Pieces\Knight($this->black, new Square(Square::FILE_G, Square::RANK_8)),
-            new Pieces\Rook($this->black, new Square(Square::FILE_H, Square::RANK_8)),
+            new Piece\Rook($this->black, new Square(Square::FILE_A, Square::RANK_8)),
+            new Piece\Knight($this->black, new Square(Square::FILE_B, Square::RANK_8)),
+            new Piece\Bishop($this->black, new Square(Square::FILE_C, Square::RANK_8)),
+            new Piece\Queen($this->black, new Square(Square::FILE_D, Square::RANK_8)),
+            new Piece\King($this->black, new Square(Square::FILE_E, Square::RANK_8)),
+            new Piece\Bishop($this->black, new Square(Square::FILE_F, Square::RANK_8)),
+            new Piece\Knight($this->black, new Square(Square::FILE_G, Square::RANK_8)),
+            new Piece\Rook($this->black, new Square(Square::FILE_H, Square::RANK_8)),
 
-            new Pieces\Pawn($this->white, new Square(Square::FILE_A, Square::RANK_2)),
-            new Pieces\Pawn($this->white, new Square(Square::FILE_B, Square::RANK_2)),
-            new Pieces\Pawn($this->white, new Square(Square::FILE_C, Square::RANK_2)),
-            new Pieces\Pawn($this->white, new Square(Square::FILE_D, Square::RANK_2)),
-            new Pieces\Pawn($this->white, new Square(Square::FILE_E, Square::RANK_2)),
-            new Pieces\Pawn($this->white, new Square(Square::FILE_F, Square::RANK_2)),
-            new Pieces\Pawn($this->white, new Square(Square::FILE_G, Square::RANK_2)),
-            new Pieces\Pawn($this->white, new Square(Square::FILE_H, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_A, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_B, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_C, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_D, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_E, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_F, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_G, Square::RANK_2)),
+            new Piece\Pawn($this->white, new Square(Square::FILE_H, Square::RANK_2)),
 
-            new Pieces\Rook($this->white, new Square(Square::FILE_A, Square::RANK_1)),
-            new Pieces\Knight($this->white, new Square(Square::FILE_B, Square::RANK_1)),
-            new Pieces\Bishop($this->white, new Square(Square::FILE_C, Square::RANK_1)),
-            new Pieces\Queen($this->white, new Square(Square::FILE_D, Square::RANK_1)),
-            new Pieces\King($this->white, new Square(Square::FILE_E, Square::RANK_1)),
-            new Pieces\Bishop($this->white, new Square(Square::FILE_F, Square::RANK_1)),
-            new Pieces\Knight($this->white, new Square(Square::FILE_G, Square::RANK_1)),
-            new Pieces\Rook($this->white, new Square(Square::FILE_H, Square::RANK_1)),
+            new Piece\Rook($this->white, new Square(Square::FILE_A, Square::RANK_1)),
+            new Piece\Knight($this->white, new Square(Square::FILE_B, Square::RANK_1)),
+            new Piece\Bishop($this->white, new Square(Square::FILE_C, Square::RANK_1)),
+            new Piece\Queen($this->white, new Square(Square::FILE_D, Square::RANK_1)),
+            new Piece\King($this->white, new Square(Square::FILE_E, Square::RANK_1)),
+            new Piece\Bishop($this->white, new Square(Square::FILE_F, Square::RANK_1)),
+            new Piece\Knight($this->white, new Square(Square::FILE_G, Square::RANK_1)),
+            new Piece\Rook($this->white, new Square(Square::FILE_H, Square::RANK_1)),
         ];
         $chessboard = new Chessboard($pieces);
 
@@ -187,22 +187,22 @@ EOF;
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_A, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Rook::class, $piece);
+        $this->assertInstanceOf(Piece\Rook::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_H, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\King::class, $piece);
+        $this->assertInstanceOf(Piece\King::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_A, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Bishop::class, $piece);
+        $this->assertInstanceOf(Piece\Bishop::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_H, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Pawn::class, $piece);
+        $this->assertInstanceOf(Piece\Pawn::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
     }
 
@@ -230,95 +230,95 @@ EOF;
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_A, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Rook::class, $piece);
+        $this->assertInstanceOf(Piece\Rook::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_B, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Knight::class, $piece);
+        $this->assertInstanceOf(Piece\Knight::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_C, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Bishop::class, $piece);
+        $this->assertInstanceOf(Piece\Bishop::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_D, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Queen::class, $piece);
+        $this->assertInstanceOf(Piece\Queen::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_E, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\King::class, $piece);
+        $this->assertInstanceOf(Piece\King::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_F, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Bishop::class, $piece);
+        $this->assertInstanceOf(Piece\Bishop::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_G, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Knight::class, $piece);
+        $this->assertInstanceOf(Piece\Knight::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_H, Square::RANK_8));
-        $this->assertInstanceOf(Pieces\Rook::class, $piece);
+        $this->assertInstanceOf(Piece\Rook::class, $piece);
         $this->assertInstanceOf(Black::class, $piece->getPlayer());
 
         for ($file = Square::FILE_A; $file <= Square::FILE_H; $file++) {
             /** @var AbstractPiece $piece */
             $piece = $chessboard->getPieceBySquare(new Square($file, Square::RANK_7));
-            $this->assertInstanceOf(Pieces\Pawn::class, $piece);
+            $this->assertInstanceOf(Piece\Pawn::class, $piece);
             $this->assertInstanceOf(Black::class, $piece->getPlayer());
         }
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_A, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Rook::class, $piece);
+        $this->assertInstanceOf(Piece\Rook::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_B, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Knight::class, $piece);
+        $this->assertInstanceOf(Piece\Knight::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_C, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Bishop::class, $piece);
+        $this->assertInstanceOf(Piece\Bishop::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_D, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Queen::class, $piece);
+        $this->assertInstanceOf(Piece\Queen::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_E, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\King::class, $piece);
+        $this->assertInstanceOf(Piece\King::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_F, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Bishop::class, $piece);
+        $this->assertInstanceOf(Piece\Bishop::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_G, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Knight::class, $piece);
+        $this->assertInstanceOf(Piece\Knight::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         /** @var AbstractPiece $piece */
         $piece = $chessboard->getPieceBySquare(new Square(Square::FILE_H, Square::RANK_1));
-        $this->assertInstanceOf(Pieces\Rook::class, $piece);
+        $this->assertInstanceOf(Piece\Rook::class, $piece);
         $this->assertInstanceOf(White::class, $piece->getPlayer());
 
         for ($file = Square::FILE_A; $file <= Square::FILE_H; $file++) {
             /** @var AbstractPiece $piece */
             $piece = $chessboard->getPieceBySquare(new Square($file, Square::RANK_2));
-            $this->assertInstanceOf(Pieces\Pawn::class, $piece);
+            $this->assertInstanceOf(Piece\Pawn::class, $piece);
             $this->assertInstanceOf(White::class, $piece->getPlayer());
         }
 
