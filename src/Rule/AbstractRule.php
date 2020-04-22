@@ -4,9 +4,8 @@ namespace Pjio\Chessboard\Rule;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Helper\RuleHelper;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\MoveValidatorInterface;
 
-abstract class AbstractRule implements MoveValidatorInterface
+abstract class AbstractRule
 {
     protected RuleHelper $ruleHelper;
 

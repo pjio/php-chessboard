@@ -2,15 +2,16 @@
 namespace Pjio\Chessboard;
 
 use Pjio\Chessboard\Board\Chessboard;
-use RuntimeException;
 use Pjio\Chessboard\Piece\Bishop;
 use Pjio\Chessboard\Piece\King;
 use Pjio\Chessboard\Piece\Knight;
 use Pjio\Chessboard\Piece\Pawn;
-use Pjio\Chessboard\Piece\Rook;
 use Pjio\Chessboard\Piece\Queen;
+use Pjio\Chessboard\Piece\Rook;
+use Pjio\Chessboard\Rule\AbstractRule;
+use RuntimeException;
 
-class MoveValidator implements MoveValidatorInterface
+class MoveValidator
 {
     private const RULES = [
         Piece\Bishop::class => Rule\BishopRule::class,
@@ -39,7 +40,7 @@ class MoveValidator implements MoveValidatorInterface
 
         $ruleFQCN = self::RULES[$pieceFQCN];
 
-        /** @var MoveValidatorInterface $rule */
+        /** @var AbstractRule $rule */
         $rule = new $ruleFQCN();
 
         return $rule->isValidMove($move, $chessboard);
