@@ -294,12 +294,12 @@ EOF;
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
-        $testScenario = 'castling_queenside';
+        $testScenario = 'castling_kingside';
         $fromSquare = new Square(Square::FILE_E, Square::RANK_8);
         $board = <<< EOF
     A B C D E F G H
    /----------------\
- 8 |br      bK      | 8
+ 8 |        bK    br| 8
  7 |                | 7
  6 |                | 6
  5 |                | 5
@@ -313,7 +313,7 @@ EOF;
         $validMoves = <<< EOF
     A B C D E F G H
    /----------------\
- 8 |    bKbK  bK    | 8
+ 8 |      bK  bKbK  | 8
  7 |      bKbKbK    | 7
  6 |                | 6
  5 |                | 5
@@ -498,7 +498,7 @@ EOF;
  4 |                | 4
  3 |                | 3
  2 |                | 2
- 1 |        wK    wr| 1
+ 1 |wr      wK    wr| 1
    \----------------/
      A B C D E F G H
 EOF;

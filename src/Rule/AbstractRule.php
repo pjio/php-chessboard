@@ -51,7 +51,7 @@ abstract class AbstractRule
     {
         $piece = $chessboard->getPieceBySquare($move->getFrom());
 
-        if ($piece === null || $piece->getPlayer() != $move->getPlayer()) {
+        if ($piece === null || !$move->getPlayer()->isPlayer($piece->getPlayer())) {
             return true;
         }
 

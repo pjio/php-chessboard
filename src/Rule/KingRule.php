@@ -43,10 +43,7 @@ class KingRule extends AbstractRule
         /** @var King $king */
         $king = $chessboard->getPieceBySquare($from);
 
-        if (!$king instanceof King
-            || $king->isMoved()
-            || !$move->getPlayer()->isPlayer($king->getPlayer())
-        ) {
+        if (!$king instanceof King || $king->isMoved()) {
             return false;
         }
 
