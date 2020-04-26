@@ -69,7 +69,7 @@ class KingRule extends AbstractRule
             return false;
         }
 
-        // Check squares between are emtpy
+        // Check squares between are empty
         $fileRange = [$king->getSquare()->getFile(), $rook->getSquare()->getFile()];
         sort($fileRange);
         for ($file = $fileRange[0] + 1; $file < $fileRange[1]; $file++) {

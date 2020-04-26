@@ -2,10 +2,12 @@
 namespace Pjio\Chessboard\Rule;
 
 use Pjio\Chessboard\Board\Chessboard;
+use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Helper\CheckedHelper;
 use Pjio\Chessboard\Helper\RuleHelper;
 use Pjio\Chessboard\Move;
-use Pjio\Chessboard\Piece\King;
+use Pjio\Chessboard\Rule\KingRule;
+use Pjio\Chessboard\Rule\PawnRule;
 
 abstract class AbstractRule
 {
@@ -27,6 +29,14 @@ abstract class AbstractRule
             || $this->isBlockedByOwnPiece($move, $chessboard)
         ) {
             return false;
+        }
+
+        if (!empty($move->getPromotion()) && get_class($this) !== PawnRule::class) {
+            throw new InvalidMoveException('Only Pawns can be promoted!');
+        }
+
+        if ($move->isCastling() && get_class($this) !== KingRule::class) {
+            throw new InvalidMoveException('Only Kings can initiate a castling!');
         }
 
         if (!$this->pieceRule($move, $chessboard)) {

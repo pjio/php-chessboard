@@ -2,11 +2,17 @@
 namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\AbstractPlayer;
+use Pjio\Chessboard\Piece\Knight;
+use Pjio\Chessboard\Piece\Bishop;
+use Pjio\Chessboard\Piece\Rook;
+use Pjio\Chessboard\Piece\Queen;
+use Pjio\Chessboard\Exception\InvalidPromotionException;
 use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Piece\AbstractPiece;
 use Pjio\Chessboard\Piece\King;
+use Pjio\Chessboard\Piece\Pawn;
 use Pjio\Chessboard\Rule\KingRule;
 
 /**
@@ -14,6 +20,13 @@ use Pjio\Chessboard\Rule\KingRule;
  */
 class Chessboard
 {
+    private const PROMOTION_FQCN = [
+        'queen'  => Queen::class,
+        'rook'   => Rook::class,
+        'bishop' => Bishop::class,
+        'knight' => Knight::class,
+    ];
+
     private array $pieces;
 
     public function __construct(array $pieces)
@@ -87,18 +100,31 @@ class Chessboard
         if ($move->isCastling()) {
             $this->handleCastling($move);
         }
+
+        if (!empty($move->getPromotion())) {
+            $this->handlePromotion($move, $piece);
+        }
     }
 
     public function getKing(AbstractPlayer $player): ?King
     {
+        $list = $this->findPieces($player, King::class);
+
+        return $list[0] ?? null;
+    }
+
+    public function findPieces(AbstractPlayer $player, string $fqcn): array
+    {
+        $pieceList = [];
+
         /** @var AbstractPiece $piece */
-        foreach ($this->pieces as $piece) {
-            if (get_class($piece) === King::class && $piece->getPlayer() == $player) {
-                return $piece;
+        foreach ($this->getPiecesOnBoard() as $piece) {
+            if (get_class($piece) === $fqcn && $piece->getPlayer() == $player) {
+                $pieceList[] = $piece;
             }
         }
 
-        return null;
+        return $pieceList;
     }
 
     public function getPiecesOnBoard(): array
@@ -143,5 +169,19 @@ class Chessboard
 
         $rook = $this->getPieceBySquare($rookFrom);
         $rook->setSquare($rookTo);
+    }
+
+    private function handlePromotion(Move $move, AbstractPiece $pawn): void
+    {
+        $square = $pawn->getSquare();
+        $fqcn   = self::PROMOTION_FQCN[$move->getPromotion()];
+
+        /** @var AbstractPiece $promotedPiece */
+        $promotedPiece = new $fqcn($pawn->getPlayer(), $square);
+        $promotedPiece->setChessboard($this);
+
+        $pawn->removeFromBoard();
+
+        $this->pieces[] = $promotedPiece;
     }
 }

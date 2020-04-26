@@ -1,8 +1,6 @@
 <?php
 namespace Pjio\Chessboard\Exception;
 
-use RuntimeException;
-
-class UnserializeException extends RuntimeException
+class UnserializeException extends ChessboardException
 {
 }

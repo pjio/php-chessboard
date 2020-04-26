@@ -1,13 +1,14 @@
 <?php
 namespace Pjio\Chessboard\Cli;
 
-use Pjio\Chessboard\GameLoader;
-use Pjio\Chessboard\Exception\InvalidMoveException;
-use Pjio\Chessboard\Exception\InvalidCoordinatesException;
-use Pjio\Chessboard\Board\Square;
-use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Board\ChessboardSerializer;
+use Pjio\Chessboard\Board\Square;
+use Pjio\Chessboard\Exception\InvalidCoordinatesException;
+use Pjio\Chessboard\Exception\InvalidMoveException;
+use Pjio\Chessboard\Exception\InvalidPromotionException;
 use Pjio\Chessboard\Game;
+use Pjio\Chessboard\GameLoader;
+use Pjio\Chessboard\Move;
 
 /**
  * Client offers an cli interface for one game
@@ -47,30 +48,42 @@ class Client
         $moved = false;
         do {
             do {
-                $fromStr    = readline('Move from: ');
-                $fromSquare = $this->parseSquare($fromStr);
+                $fromStr = readline('Move from: ');
+                list($fromSquare, $omit) = $this->parseSquare($fromStr);
             } while ($fromSquare === null);
 
             do {
-                $toStr    = readline('Move to: ');
-                $toSquare = $this->parseSquare($toStr);
+                $toStr = readline('Move to: ');
+                list($toSquare, $promotion) = $this->parseSquare($toStr, true);
             } while ($toSquare === null);
 
-            $move = new Move($this->game->getActivePlayer(), $fromSquare, $toSquare);
+            $move = new Move($this->game->getActivePlayer(), $fromSquare, $toSquare, false, $promotion ?? '');
             try {
                 $this->game->move($move);
                 $moved = true;
-            } catch (InvalidMoveException $e) {
+            } catch (InvalidMoveException|InvalidPromotionException $e) {
                 echo 'ERROR: ' . $e->getMessage() . PHP_EOL;
             }
         } while (!$moved);
     }
 
-    private function parseSquare(string $squareStr): ?Square
+    private function parseSquare(string $squareStr, bool $allowPromotion = false): ?array
     {
+        if ($allowPromotion) {
+            $split = explode(' ', $squareStr);
+
+            if (count($split) > 2) {
+                echo 'ERROR: To promote a pawn enter: a1 queen, h8 knight, etc.' . PHP_EOL;
+                return [null, null];
+            }
+
+            $squareStr = $split[0];
+            $promotion = $split[1] ?? null;
+        }
+
         if (strlen($squareStr) !== 2) {
             echo 'ERROR: Positions must be two characters (e.g. a1, h8, ...)' . PHP_EOL;
-            return null;
+            return [null, null];
         }
 
         $file = ord(strtolower($squareStr[0])) - 97;
@@ -78,10 +91,10 @@ class Client
 
         try {
             $square = new Square($file, $rank);
-            return $square;
+            return [$square, $promotion ?? null];
         } catch (InvalidCoordinatesException $e) {
             echo 'ERROR: ' . $e->getMessage() . PHP_EOL;
-            return null;
+            return [null, null];
         }
     }
 }
