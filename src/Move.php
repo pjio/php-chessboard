@@ -2,6 +2,7 @@
 namespace Pjio\Chessboard;
 
 use Pjio\Chessboard\Board\Square;
+use Pjio\Chessboard\Piece\Pawn;
 
 /**
  * Move represents an intended move of a piece by a player
@@ -10,27 +11,28 @@ use Pjio\Chessboard\Board\Square;
 class Move
 {
     private AbstractPlayer $player;
-
-    public function setPlayer(AbstractPlayer $player): void
-    {
-        $this->player = $player;
-    }
     private Square $from;
     private Square $to;
     private bool $castling;
     private string $promotion;
+    private bool $movePassant;
+    private ?Pawn $captureEnPassant;
 
     public function __construct(
         AbstractPlayer $player,
         Square $from,
         Square $to,
         bool $isCastling = false,
-        string $promotion = ''
+        string $promotion = '',
+        bool $movePassant = false,
+        Pawn $captureEnPassant = null
     ) {
-        $this->player    = $player;
-        $this->from      = $from;
-        $this->to        = $to;
-        $this->castling  = $isCastling;
+        $this->player           = $player;
+        $this->from             = $from;
+        $this->to               = $to;
+        $this->castling         = $isCastling;
+        $this->movePassant      = $movePassant;
+        $this->captureEnPassant = $captureEnPassant;
 
         $this->setPromotion($promotion);
     }
@@ -68,6 +70,26 @@ class Move
     public function setPromotion(string $promotion): void
     {
         $this->promotion = strtolower($promotion);
+    }
+
+    public function isMovePassant(): bool
+    {
+        return $this->movePassant;
+    }
+
+    public function setMovePassant(bool $movePassant): void
+    {
+        $this->movePassant = $movePassant;
+    }
+
+    public function getCaptureEnPassant(): ?Pawn
+    {
+        return $this->captureEnPassant;
+    }
+
+    public function setCaptureEnPassant(Pawn $captureEnPassant): void
+    {
+        $this->captureEnPassant = $captureEnPassant;
     }
 
     public function __toString(): string

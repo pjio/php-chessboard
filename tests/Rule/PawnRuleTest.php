@@ -2,6 +2,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
+use Pjio\Chessboard\Piece\Pawn;
 use Pjio\Chessboard\Black;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\ChessboardSerializer;
@@ -630,5 +631,195 @@ EOF;
                 'move' => new Move($black, new Square(Square::FILE_F, Square::RANK_4), new Square(Square::FILE_E, Square::RANK_3), false, 'rook'),
             ],
         ];
+    }
+
+    public function testCaptureEnPassant()
+    {
+        $white = new White();
+        $black = new Black();
+
+        $board = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |      bp        | 4
+ 3 |                | 3
+ 2 |    wp          | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        /** @var Chessboard $chessboard */
+        $chessboard = $this->chessboardSerializer->unserialize($board, 123);
+
+        /** @var Pawn $blackPawn */
+        $blackPawn = $chessboard->getPieceBySquare(new Square(Square::FILE_D, Square::RANK_4));
+
+        /** @var Pawn $whitePawn */
+        $whitePawn = $chessboard->getPieceBySquare(new Square(Square::FILE_C, Square::RANK_2));
+
+        $movePassant = new Move($white, $whitePawn->getSquare(), new Square(Square::FILE_C, Square::RANK_4));
+
+        // The validation recognizes the special movement
+        $this->assertFalse($movePassant->isMovePassant());
+        $movePassantValid = $this->pawnRule->isValidMove($movePassant, $chessboard);
+        $this->assertTrue($movePassant->isMovePassant());
+        $this->assertTrue($movePassantValid);
+
+        // Execute the move
+        $chessboard->move($movePassant);
+
+        // Now the black Pawn can capture it
+        $moveCaptureEnPassant = new Move($black, $blackPawn->getSquare(), new Square(Square::FILE_C, Square::RANK_3));
+        $moveCaptureEnPassantValid = $this->pawnRule->isValidMove($moveCaptureEnPassant, $chessboard);
+        $this->assertTrue($moveCaptureEnPassantValid);
+        $chessboard->move($moveCaptureEnPassant);
+
+        $this->assertNull($chessboard->getPieceBySquare(new Square(Square::FILE_C, Square::RANK_4)));
+    }
+
+    public function testCaptureEnPassantFailsIfRegularMove()
+    {
+        $white = new White();
+        $black = new Black();
+
+        $board = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |                | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |      bp        | 4
+ 3 |    wp          | 3
+ 2 |                | 2
+ 1 |                | 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        /** @var Chessboard $chessboard */
+        $chessboard = $this->chessboardSerializer->unserialize($board, 123);
+
+        /** @var Pawn $blackPawn */
+        $blackPawn = $chessboard->getPieceBySquare(new Square(Square::FILE_D, Square::RANK_4));
+
+        /** @var Pawn $whitePawn */
+        $whitePawn = $chessboard->getPieceBySquare(new Square(Square::FILE_C, Square::RANK_3));
+
+        $moveRegular = new Move($white, $whitePawn->getSquare(), new Square(Square::FILE_C, Square::RANK_4));
+
+        // The validation doesn't set the flag for a special movement
+        $this->assertFalse($moveRegular->isMovePassant());
+        $moveRegularValid = $this->pawnRule->isValidMove($moveRegular, $chessboard);
+        $this->assertFalse($moveRegular->isMovePassant());
+        $this->assertTrue($moveRegularValid);
+
+        // Regular move
+        $chessboard->move($moveRegular);
+
+        // Now the black Pawn can't capture it
+        $moveCaptureEnPassant = new Move($black, $blackPawn->getSquare(), new Square(Square::FILE_C, Square::RANK_3));
+        $moveCaptureEnPassantValid = $this->pawnRule->isValidMove($moveCaptureEnPassant, $chessboard);
+        $this->assertFalse($moveCaptureEnPassantValid);
+    }
+
+    public function testCaptureEnPassantFailsIfTooLate()
+    {
+        $white = new White();
+        $black = new Black();
+
+        $board = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |              br| 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |      bp        | 4
+ 3 |                | 3
+ 2 |    wp          | 2
+ 1 |              wr| 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        /** @var Chessboard $chessboard */
+        $chessboard = $this->chessboardSerializer->unserialize($board, 123);
+
+        /** @var Pawn $blackPawn */
+        $blackPawn = $chessboard->getPieceBySquare(new Square(Square::FILE_D, Square::RANK_4));
+
+        /** @var Pawn $whitePawn */
+        $whitePawn = $chessboard->getPieceBySquare(new Square(Square::FILE_C, Square::RANK_2));
+
+        $whiteRook = $chessboard->getPieceBySquare(new Square(Square::FILE_H, Square::RANK_1));
+        $blackRook = $chessboard->getPieceBySquare(new Square(Square::FILE_H, Square::RANK_8));
+
+        $movePassant = new Move($white, $whitePawn->getSquare(), new Square(Square::FILE_C, Square::RANK_4));
+
+        // The validation recognizes the special movement
+        $this->assertFalse($movePassant->isMovePassant());
+        $movePassantValid = $this->pawnRule->isValidMove($movePassant, $chessboard);
+        $this->assertTrue($movePassant->isMovePassant());
+        $this->assertTrue($movePassantValid);
+
+        // Execute the move
+        $chessboard->move($movePassant);
+
+        // Make an unrelated move
+        $moveBlack = new Move($black, new Square(Square::FILE_H, Square::RANK_8), new Square(Square::FILE_H, Square::RANK_5));
+        $chessboard->move($moveBlack);
+        $moveWhite = new Move($white, new Square(Square::FILE_H, Square::RANK_1), new Square(Square::FILE_H, Square::RANK_4));
+        $chessboard->move($moveWhite);
+
+        // Now the black Pawn can't capture it
+        $moveCaptureEnPassant = new Move($black, $blackPawn->getSquare(), new Square(Square::FILE_C, Square::RANK_3));
+        $moveCaptureEnPassantValid = $this->pawnRule->isValidMove($moveCaptureEnPassant, $chessboard);
+        $this->assertFalse($moveCaptureEnPassantValid);
+    }
+
+    public function testEnPassantScenario1()
+    {
+        $white = new White();
+        $black = new Black();
+
+        $board = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |br    bQ  brbK  | 8
+ 7 |bpbbbpbk  bpbbbp| 7
+ 6 |  bp    bp  bp  | 6
+ 5 |      bpwp      | 5
+ 4 |      wp        | 4
+ 3 |    wpwbwp      | 3
+ 2 |wpwp  wk    wpwp| 2
+ 1 |wr  wbwQ  wrwK  | 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        /** @var Chessboard $chessboard */
+        $chessboard = $this->chessboardSerializer->unserialize($board, 123);
+
+        /** @var Pawn $blackPawn */
+        $blackPawn = $chessboard->getPieceBySquare(new Square(Square::FILE_F, Square::RANK_7));
+
+        /** @var Pawn $whitePawn */
+        $whitePawn = $chessboard->getPieceBySquare(new Square(Square::FILE_E, Square::RANK_5));
+
+        // Move passant
+        $movePassant = new Move($black, $blackPawn->getSquare(), new Square(Square::FILE_F, Square::RANK_5));
+        $movePassantValid = $this->pawnRule->isValidMove($movePassant, $chessboard);
+        $this->assertTrue($movePassantValid);
+        $chessboard->move($movePassant);
+
+        // Capture en passant
+        $moveCaptureEnPassant = new Move($white, $whitePawn->getSquare(), new Square(Square::FILE_F, Square::RANK_6));
+        $moveCaptureEnPassantValid = $this->pawnRule->isValidMove($moveCaptureEnPassant, $chessboard);
+        $this->assertTrue($moveCaptureEnPassantValid);
+        $chessboard->move($moveCaptureEnPassant);
+
+        $this->assertNull($chessboard->getPieceBySquare(new Square(Square::FILE_F, Square::RANK_5)));
     }
 }

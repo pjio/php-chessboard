@@ -43,6 +43,7 @@ class PawnRule extends AbstractRule
                 && null === $chessboard->getPieceBySquare(new Square($from->getFile(), $from->getRank() + $direction))
             ) {
                 $allowedRanks[] = $from->getRank() + $direction * 2;
+                $move->setMovePassant(true);
             }
 
             if (!in_array($to->getRank(), $allowedRanks)) {
@@ -52,6 +53,18 @@ class PawnRule extends AbstractRule
             // Diagonal move must be excactly one rank far
             if ($from->getRank() + $direction !== $to->getRank()) {
                 return false;
+            }
+
+            // Pawns can capture other Pawns en passant
+            if ($capturedPiece === null) {
+                /** @var Pawn|null $captureEnPassant */
+                $captureEnPassant = $chessboard->getPieceBySquare(new Square($to->getFile(), $from->getRank()));
+
+                if (get_class($captureEnPassant) === Pawn::class
+                    && $captureEnPassant->getMovePassantPly() === $chessboard->getPlyCount()
+                ) {
+                    $capturedPiece = $captureEnPassant;
+                }
             }
 
             // On diagonal move must capture an opposing piece
@@ -72,6 +85,10 @@ class PawnRule extends AbstractRule
             if ($promotion === '') {
                 $move->setPromotion('queen');
             }
+        }
+
+        if (isset($captureEnPassant)) {
+            $move->setCaptureEnPassant($captureEnPassant);
         }
 
         return true;

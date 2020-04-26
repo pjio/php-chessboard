@@ -2,17 +2,17 @@
 namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\AbstractPlayer;
-use Pjio\Chessboard\Piece\Knight;
-use Pjio\Chessboard\Piece\Bishop;
-use Pjio\Chessboard\Piece\Rook;
-use Pjio\Chessboard\Piece\Queen;
-use Pjio\Chessboard\Exception\InvalidPromotionException;
 use Pjio\Chessboard\Exception\InvalidMoveException;
+use Pjio\Chessboard\Exception\InvalidPromotionException;
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Piece\AbstractPiece;
+use Pjio\Chessboard\Piece\Bishop;
 use Pjio\Chessboard\Piece\King;
+use Pjio\Chessboard\Piece\Knight;
 use Pjio\Chessboard\Piece\Pawn;
+use Pjio\Chessboard\Piece\Queen;
+use Pjio\Chessboard\Piece\Rook;
 use Pjio\Chessboard\Rule\KingRule;
 
 /**
@@ -28,15 +28,17 @@ class Chessboard
     ];
 
     private array $pieces;
+    private int $plyCount;
 
-    public function __construct(array $pieces)
+    public function __construct(array $pieces, int $plyCount = 0)
     {
         /** @var AbstractPiece $piece */
         foreach ($pieces as $piece) {
             $piece->setChessboard($this);
         }
 
-        $this->pieces = $pieces;
+        $this->pieces   = $pieces;
+        $this->plyCount = $plyCount;
 
         $this->ensureMaxOnePiecePerSquare();
     }
@@ -87,6 +89,11 @@ class Chessboard
 
         /** @var AbstractPiece $capturePiece */
         $capturePiece = $this->getPieceBySquare($move->getTo());
+
+        if ($capturePiece === null) {
+            $capturePiece = $move->getCaptureEnPassant();
+        }
+
         if ($capturePiece !== null) {
             if ($capturePiece->getPlayer() == $piece->getPlayer()) {
                 throw new InvalidMoveException('Can\'t remove piece of active player');
@@ -103,6 +110,13 @@ class Chessboard
 
         if (!empty($move->getPromotion())) {
             $this->handlePromotion($move, $piece);
+        }
+
+        $this->plyCount++;
+
+        if ($move->isMovePassant()) {
+            /** @var Pawn $piece */
+            $piece->setMovePassantPly($this->plyCount);
         }
     }
 
@@ -130,6 +144,11 @@ class Chessboard
     public function getPiecesOnBoard(): array
     {
         return array_filter($this->pieces, fn($piece) => !$piece->isRemoved());
+    }
+
+    public function getPlyCount(): int
+    {
+        return $this->plyCount;
     }
 
     private function ensureMaxOnePiecePerSquare(): void

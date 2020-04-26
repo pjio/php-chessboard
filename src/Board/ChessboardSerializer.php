@@ -44,7 +44,7 @@ class ChessboardSerializer
         return $this->stringify($flatBoard, $colors);
     }
 
-    public function unserialize(string $str): Chessboard
+    public function unserialize(string $str, int $plyCount = 0): Chessboard
     {
         $rows = explode("\n", $str);
 
@@ -66,7 +66,7 @@ class ChessboardSerializer
             $pieces = array_merge($pieces, $this->parseRow($rows[$index], $rank));
         }
 
-        return new Chessboard($pieces);
+        return new Chessboard($pieces, $plyCount);
     }
 
     private function flatten(Chessboard $chessboard): array
