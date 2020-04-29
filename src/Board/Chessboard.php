@@ -90,8 +90,10 @@ class Chessboard
         /** @var AbstractPiece $capturePiece */
         $capturePiece = $this->getPieceBySquare($move->getTo());
 
-        if ($capturePiece === null) {
-            $capturePiece = $move->getCaptureEnPassant();
+        if ($capturePiece === null && $move->getCaptureEnPassant() !== null) {
+            // Re-fetch the piece in case $move belongs to another Chessboard instance
+            // (This might be a clone, see Pjio\Chessboard\Rule\AbstractRule::isOwnKingCheckedAfterMove())
+            $capturePiece = $this->getPieceBySquare($move->getCaptureEnPassant()->getSquare());
         }
 
         if ($capturePiece !== null) {
