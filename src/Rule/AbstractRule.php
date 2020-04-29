@@ -1,6 +1,7 @@
 <?php
 namespace Pjio\Chessboard\Rule;
 
+use Pjio\Chessboard\Black;
 use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Helper\CheckedHelper;
@@ -8,16 +9,21 @@ use Pjio\Chessboard\Helper\RuleHelper;
 use Pjio\Chessboard\Move;
 use Pjio\Chessboard\Rule\KingRule;
 use Pjio\Chessboard\Rule\PawnRule;
+use Pjio\Chessboard\White;
 
 abstract class AbstractRule
 {
     protected RuleHelper $ruleHelper;
     protected CheckedHelper $checkedHelper;
+    protected White $white;
+    protected Black $black;
 
     public function __construct()
     {
         $this->ruleHelper = new RuleHelper();
         $this->checkedHelper = new CheckedHelper();
+        $this->white = new White();
+        $this->black = new Black();
     }
 
     abstract protected function pieceRule(Move $move, Chessboard $chessboard): bool;
@@ -81,14 +87,26 @@ abstract class AbstractRule
 
     protected function isOwnKingCheckedAfterMove(Move $move, Chessboard $chessboard): bool
     {
-        $copy = clone $chessboard;
-        $copy->move($move);
-        $king = $copy->getKing($move->getPlayer());
+        $copy         = clone $chessboard;
+        $opponent     = $move->getPlayer() == $this->white ? $this->black : $this->white;
+        $kingOpponent = $copy->getKing($opponent);
 
-        if ($king === null) {
+        $copy->move($move);
+
+        if ($kingOpponent !== null) {
+            // If the opposing king was captured, the game is won
+            if ($copy->getKing($opponent) === null) {
+                return false;
+            }
+        }
+
+        $kingPlayer = $copy->getKing($move->getPlayer());
+
+        // Having a board without a king happens only in unittests
+        if ($kingPlayer === null) {
             return false;
         }
 
-        return $this->checkedHelper->isKingChecked($king, $copy);
+        return $this->checkedHelper->isKingChecked($kingPlayer, $copy);
     }
 }
