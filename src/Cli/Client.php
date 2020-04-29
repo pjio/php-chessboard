@@ -3,6 +3,7 @@ namespace Pjio\Chessboard\Cli;
 
 use Pjio\Chessboard\Board\ChessboardSerializer;
 use Pjio\Chessboard\Board\Square;
+use Pjio\Chessboard\Exception\GameAbortException;
 use Pjio\Chessboard\Exception\InvalidCoordinatesException;
 use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Exception\InvalidPromotionException;
@@ -27,8 +28,12 @@ class Client
 
     public function run(): void
     {
-        $this->game = $this->gameLoader->createNewGame();
-        $this->gameLoop();
+        try {
+            $this->game = $this->gameLoader->createNewGame();
+            $this->gameLoop();
+        } catch (GameAbortException $e) {
+            printf('Game abort: %s%s', $e->getMessage(), PHP_EOL);
+        }
     }
 
     private function gameLoop(): void
@@ -69,6 +74,10 @@ class Client
 
     private function parseSquare(string $squareStr, bool $allowPromotion = false): ?array
     {
+        if (strtolower($squareStr) === 'exit') {
+            throw new GameAbortException('Abort by user');
+        }
+
         if ($allowPromotion) {
             $split = explode(' ', $squareStr);
 
