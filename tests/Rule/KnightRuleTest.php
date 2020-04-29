@@ -198,6 +198,39 @@ EOF;
 EOF;
         $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
 
+        // This tests the special case in AbstractRule::isOwnKingCheckedAfterMove() for all pieces.
+        $testScenario = 'capture_king_is_allowed_if_last_ply';
+        $fromSquare = new Square(Square::FILE_F, Square::RANK_3);
+        $board = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |          bK    | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |          bk    | 3
+ 2 |                | 2
+ 1 |        wKwr    | 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        $validMoves = <<< EOF
+    A B C D E F G H
+   /----------------\
+ 8 |          bK    | 8
+ 7 |                | 7
+ 6 |                | 6
+ 5 |                | 5
+ 4 |                | 4
+ 3 |                | 3
+ 2 |                | 2
+ 1 |        bkwr    | 1
+   \----------------/
+     A B C D E F G H
+EOF;
+        $moveList = array_merge($moveList, $validMovesParser->parse($testScenario, $fromSquare, $board, $validMoves));
+
         return $moveList;
     }
 }
