@@ -1,6 +1,7 @@
 <?php
 namespace Pjio\Chessboard\Piece;
 
+use Pjio\Chessboard\Board\Chessboard;
 use Pjio\Chessboard\Board\Square;
 use Pjio\Chessboard\Piece\AbstractPiece;
 
@@ -22,5 +23,12 @@ class Rook extends AbstractPiece
     public function isMoved(): bool
     {
         return $this->moved;
+    }
+
+    public function getClone(Chessboard $chessboard): self
+    {
+        $clone = parent::getClone($chessboard);
+        $clone->moved = $this->moved;
+        return $clone;
     }
 }
