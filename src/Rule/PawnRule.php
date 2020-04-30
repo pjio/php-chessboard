@@ -60,7 +60,7 @@ class PawnRule extends AbstractRule
                 /** @var Pawn|null $captureEnPassant */
                 $captureEnPassant = $chessboard->getPieceBySquare(new Square($to->getFile(), $from->getRank()));
 
-                if (get_class($captureEnPassant) === Pawn::class
+                if ($captureEnPassant !== null && get_class($captureEnPassant) === Pawn::class
                     && $captureEnPassant->getMovePassantPly() === $chessboard->getPlyCount()
                 ) {
                     $capturedPiece = $captureEnPassant;

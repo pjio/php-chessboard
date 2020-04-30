@@ -65,7 +65,7 @@ class Square
     {
         if ($file < 0 || $file > 7 || $rank < 0 || $rank > 7) {
             throw new InvalidCoordinatesException(
-                sprintf('Invalid Coordinates: %d, %d', $file, $rank)
+                sprintf('Invalid coordinates: %d, %d', $file, $rank)
             );
         }
 
@@ -73,18 +73,56 @@ class Square
         $this->rank = $rank;
     }
 
-    public function getFile(): int
+    /**
+     * @return int|string
+     */
+    public function getFile(bool $readable = false)
     {
+        if ($readable) {
+            return self::READABLE_FILE[$this->file];
+        }
+
         return $this->file;
     }
 
-    public function getRank(): int
+    public function getRank(bool $readable = false): int
     {
+        if ($readable) {
+            return self::READABLE_RANK[$this->rank];
+        }
+
         return $this->rank;
     }
 
     public function __toString()
     {
         return sprintf('%s%s', self::READABLE_FILE[$this->file], self::READABLE_RANK[$this->rank]);
+    }
+
+    public static function fromString(string $str): self
+    {
+        if (strlen($str) !== 2) {
+            throw new InvalidCoordinatesException(sprintf('Invalid coordinates: "%s"', $str));
+        }
+
+        $fileStr = strtoupper($str[0]);
+        $rankStr = $str[1];
+
+        $files = array_flip(self::READABLE_FILE);
+        $ranks = array_flip(self::READABLE_RANK);
+
+        $file = $files[$fileStr] ?? null;
+        $rank = $ranks[$rankStr] ?? null;
+
+        if ($file === null || $rank === null) {
+            throw new InvalidCoordinatesException(sprintf('Invalid coordinates: "%s"', $str));
+        }
+
+        return new Square($file, $rank);
+    }
+
+    public static function at(int $file, int $rank): self
+    {
+        return new self($file, $rank);
     }
 }
