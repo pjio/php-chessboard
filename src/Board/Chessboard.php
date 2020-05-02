@@ -2,6 +2,7 @@
 namespace Pjio\Chessboard\Board;
 
 use Pjio\Chessboard\AbstractPlayer;
+use Pjio\Chessboard\Exception\ChessboardException;
 use Pjio\Chessboard\Exception\InvalidMoveException;
 use Pjio\Chessboard\Exception\InvalidPromotionException;
 use Pjio\Chessboard\Exception\MultiplePiecesOnSquareException;
@@ -17,6 +18,8 @@ use Pjio\Chessboard\Rule\KingRule;
 
 /**
  * Chessboard is the model for the board and all the pieces
+ *
+ * Attention: New properties with objects/references must be handled in __clone()
  */
 class Chessboard
 {
@@ -29,8 +32,10 @@ class Chessboard
 
     private array $pieces;
     private int $plyCount;
+    private bool $useIndex;
+    private array $pieceIndex;
 
-    public function __construct(array $pieces, int $plyCount = 0)
+    public function __construct(array $pieces, int $plyCount = 0, bool $useIndex = true)
     {
         /** @var AbstractPiece $piece */
         foreach ($pieces as $piece) {
@@ -39,8 +44,13 @@ class Chessboard
 
         $this->pieces   = $pieces;
         $this->plyCount = $plyCount;
+        $this->useIndex = $useIndex;
 
-        $this->ensureMaxOnePiecePerSquare();
+        if ($this->useIndex) {
+            $this->buildIndex();
+        } else {
+            $this->ensureMaxOnePiecePerSquare();
+        }
     }
 
     public function getPiecesIterator(): iterable
@@ -50,6 +60,10 @@ class Chessboard
 
     public function getPieceBySquare(Square $square): ?AbstractPiece
     {
+        if ($this->useIndex) {
+            return $this->pieceIndex[$square->__toString()] ?? null;
+        }
+
         /** @var AbstractPiece $piece */
         foreach ($this->pieces as $piece) {
             if ($piece->getSquare() == $square) {
@@ -80,6 +94,8 @@ class Chessboard
         }
 
         $this->pieces = $clonedPieces;
+
+        $this->buildIndex();
     }
 
     public function move(Move $move): void
@@ -153,6 +169,59 @@ class Chessboard
         return $this->plyCount;
     }
 
+    public function notifySquareChanged(Square $oldSquare, ?Square $newSquare): void
+    {
+        if ($this->useIndex) {
+            $this->updateIndex($oldSquare, $newSquare);
+        }
+    }
+
+    private function buildIndex(): void
+    {
+        $this->pieceIndex = [];
+
+        /** @var AbstractPiece $piece */
+        foreach ($this->pieces as $piece) {
+            $square = $piece->getSquare();
+            if ($square === null) {
+                continue;
+            }
+            $key = $piece->getSquare()->__toString();
+
+            if (isset($this->pieceIndex[$key])) {
+                throw new MultiplePiecesOnSquareException(
+                    sprintf('Square is occupied by more than one piece: %s', $key)
+                );
+            }
+
+            $this->pieceIndex[$key] = $piece;
+        }
+    }
+
+    private function updateIndex(Square $oldSquare, ?Square $newSquare): void
+    {
+        $oldKey = $oldSquare->__toString();
+        if (!isset($this->pieceIndex[$oldKey])) {
+            throw new ChessboardException(sprintf('No piece found at: %s', $oldKey));
+        }
+
+        $piece = $this->pieceIndex[$oldKey];
+        unset($this->pieceIndex[$oldKey]);
+
+        if ($newSquare === null) {
+            return;
+        }
+
+        $newKey = $newSquare->__toString();
+        if (isset($this->pieceIndex[$newKey])) {
+            throw new MultiplePiecesOnSquareException(
+                sprintf('Square would be occupied by more than one piece: %s', $newKey)
+            );
+        }
+
+        $this->pieceIndex[$newKey] = $piece;
+    }
+
     private function ensureMaxOnePiecePerSquare(): void
     {
         $squareList = [];
@@ -204,5 +273,9 @@ class Chessboard
         $pawn->removeFromBoard();
 
         $this->pieces[] = $promotedPiece;
+
+        if ($this->useIndex) {
+            $this->pieceIndex[$square->__toString()] = $promotedPiece;
+        }
     }
 }
