@@ -55,12 +55,16 @@ abstract class AbstractPiece
             );
         }
 
+        $oldSquare = $this->square;
         $this->square = $square;
+        $this->chessboard->notifySquareChanged($oldSquare, $square);
     }
 
     public function removeFromBoard(): void
     {
+        $oldSquare = $this->square;
         $this->square = null;
+        $this->chessboard->notifySquareChanged($oldSquare, null);
     }
 
     public function isRemoved(): bool
