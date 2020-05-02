@@ -5,7 +5,8 @@ RUN apt-get update \
     && apt-get clean
 
 RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+    && docker-php-ext-enable xdebug \
+    && docker-php-ext-install pcntl
 
 RUN useradd chess -u 1000 -m
 

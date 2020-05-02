@@ -8,4 +8,4 @@ if [ $? -ne 0 ]; then
   echo -e "$HOST_IP\t$HOST_DOMAIN" >> /etc/hosts
 fi
 
-su -c /app/bin/play.php chess
+exec su -c /app/bin/play.php chess
