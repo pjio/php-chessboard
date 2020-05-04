@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  phar-builder:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile.phar-builder
+    volumes:
+      - ./:/app
+

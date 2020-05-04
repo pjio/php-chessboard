@@ -1,0 +1,12 @@
+FROM php:7.4-cli
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+RUN sed -ri 's/^;? *(phar.readonly *= *)[Onf01]+ *$/\1 Off/' /usr/local/etc/php/php.ini-development
+RUN ln -s php.ini-development /usr/local/etc/php/php.ini
+RUN useradd builder -u 1000 -m
+
+USER    builder
+WORKDIR /app
+
+ENTRYPOINT ["/app/bin/build-phar.php"]
